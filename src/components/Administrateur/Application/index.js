@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {Row, Col, Card, Spinner, Button} from 'react-bootstrap';
-import { useLocation, useHistory, Link } from 'react-router-dom'
-import Aux from "../../hoc/_Aux";
-import { API_SERVER } from "../../config/constant";
-import { errorModal, Toast } from "../Common/SweetModal"
-
+import { useLocation, useHistory, Link } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import Aux from "hoc/_Aux";
+import { API_SERVER } from "config/constant";
+import { errorModal, Toast } from "../../Common/SweetModal"
 import AppApi from 'utils/app';
 
 const Application = () =>  {
@@ -85,7 +85,7 @@ const Application = () =>  {
                                                 <a href={item.lien_app} target="_blank" rel="noopener noreferrer">
                                                     <div className="row align-items-center justify-content-center">
                                                         <div className="col-auto">
-                                                            <img onError={defaultSrcImg} src={ path + item.logo_app } alt="" width={50}/>
+                                                            <LazyLoadImage onError={defaultSrcImg} src={ path + item.logo_app } alt="" width={50}/>
                                                         </div>
                                                         <div className="col text-right">
                                                             <h4>{ item.nom_app }</h4>

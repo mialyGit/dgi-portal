@@ -5,9 +5,10 @@ import { faker } from '@faker-js/faker/locale/fr';
 import PersForm from './AddComponents/pers-form';
 import CinForm from './AddComponents/cin-form';
 import CompteForm from './AddComponents/compte-form';
-import { errorModal } from "../Common/SweetModal"
+import ProForm from './AddComponents/pro-form';
+import { errorModal } from "../../Common/SweetModal"
 
-import Aux from "../../hoc/_Aux";
+import Aux from "hoc/_Aux";
 import UserApi from 'utils/user';
 
 const AddUser = () => {
@@ -23,9 +24,11 @@ const AddUser = () => {
         adresse : faker.address.country(),
         password : '',
         password_confirmation : '',
-        created_at : "",
         file: faker.image.avatar(),
-        type_user_id : 1
+        num_matricule : faker.phone.number('######'),
+        fonction_id : 0,
+        grade_id : 0,
+        type_user_id : 0
     }
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -69,9 +72,9 @@ const AddUser = () => {
         e.preventDefault();
         setLoading(true);
         // let str_cin = new Blob([JSON.stringify({})], { type: 'application/json'})
-        setUser({...user, cin:JSON.stringify(cin)})
-
-        UserApi.add(user).then((res)=>{
+        let data = {...user}
+        data.cin = JSON.stringify(cin)
+        UserApi.add(data).then((res)=>{
             console.log(res);
             localStorage.removeItem("users")
             let newValue = res.data.user
@@ -80,7 +83,6 @@ const AddUser = () => {
             errorModal(err)
             setLoading(false)
         })
-
 
     }
 
@@ -101,7 +103,8 @@ const AddUser = () => {
                     switch (step) {
                         case 1: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
                         case 2: return <CinForm cin={cin} handleInputChange={handleCinChange} nextStep={nextStep} prevStep={prevStep} />
-                        case 3: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep} loading={loading} />
+                        case 3: return <ProForm user={user} handleInputChange={handleInputChange} nextStep={nextStep} prevStep={prevStep} />
+                        case 4: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep} loading={loading} />
                         default: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
                     }
                 })()}

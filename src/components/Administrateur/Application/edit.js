@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useHistory, useLocation} from 'react-router-dom'
-import {Form, InputGroup, FormControl, Row, Col, Card, Button, Spinner} from 'react-bootstrap';
-import { API_SERVER } from "../../config/constant";
+import { Link, useHistory, useLocation} from 'react-router-dom'
+import {Form, InputGroup, FormControl, Row, Col, Card, Button, Spinner, ProgressBar} from 'react-bootstrap';
+import { API_SERVER } from "config/constant";
 import { deleteModal, errorModal } from 'components/Common/SweetModal';
-import Aux from "../../hoc/_Aux";
+import Aux from "hoc/_Aux";
 import AppApi from 'utils/app';
 
 const EditApp = () => {
@@ -12,20 +12,24 @@ const EditApp = () => {
     const path = API_SERVER + 'storage/';
     const fileRef = useRef();
 
-    const [app, setApp] = useState({
-        id : '',
+    const initialStateApp = {
+        id: 0,
         code_app: '',
         nom_app: '',
         abrev_app: '',
         desc_app: '',
-        lien_app: '',
-        logo_app: '',
+        lien_app: 'https://',
+        type_app: 0,
         file: ''
-    })
+    }
+
+    const [app, setApp] = useState(initialStateApp)
+    const [uptadedApp, setUpdtatedApp] = useState({})
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(undefined);
     const [errors, setErrors] = useState({});
+    const [progress, setProgress] = useState(0)
     const [preview, setPreview] = useState("/portals/no-import.png");
     const [uploadMessage, setUploadMessage] = useState({
         color : "text-muted",
@@ -35,10 +39,44 @@ const EditApp = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setApp({ ...app, [name]: value });
+        setUpdtatedApp({...uptadedApp, [name]: value });
         if(!!errors[name]){
             setErrors({...errors, [name]:null})
         }
     };
+
+    const handleCheckChange = (e) => {
+        const value = parseInt(e.target.value)
+        setApp({...app, type_app: value })
+        setUpdtatedApp({...uptadedApp, type_app: value });
+    }
+
+    function handleEvent(e) {
+        setTimeout(() => {
+            const value = parseInt( ((e.loaded / e.target.fileSize) * 100), 10 );
+            setProgress(value)
+            if (e.type === "loadend") {
+                const result = e.target.result
+                setUploadMessage({color: "text-muted", text: e.target.fileName})
+                setPreview(result);
+                setApp({ ...app, file: result });
+                setUpdtatedApp({...uptadedApp, file: result });
+                console.log(e.target.result);
+                setTimeout(() => {
+                    setProgress(0)
+                }, 100); 
+            }
+        }, 500);
+    }
+
+    function addListeners(reader) {
+        reader.addEventListener('loadstart', handleEvent);
+        reader.addEventListener('load', handleEvent);
+        reader.addEventListener('loadend', handleEvent);
+        reader.addEventListener('progress', handleEvent);
+        reader.addEventListener('error', handleEvent);
+        reader.addEventListener('abort', handleEvent);
+    }
 
     const handleInputFileChange = event => {
         const image = event.target.files[0]
@@ -47,11 +85,9 @@ const EditApp = () => {
             var fileExtension = image.name.split('.').pop().toLowerCase()
             if(ext.indexOf(fileExtension)>-1){
                 const reader = new FileReader();
-                reader.onload = ({ target: { result } }) => {
-                    setUploadMessage({color: "text-muted", text: image.name})
-                    setPreview(result)
-                    setApp({...app, file: image})
-                };
+                reader.fileName = image.name;
+                reader.fileSize = image.size;
+                addListeners(reader);
                 reader.readAsDataURL(image);
             } else{
                 setUploadMessage({color: "text-danger", text: "Fichier invalide!"})
@@ -73,7 +109,7 @@ const EditApp = () => {
         deleteModal().fire({
             preConfirm: () => {
                 deleteModal().getCancelButton().setAttribute("style","display:none")
-                localStorage.removeItem("lists")
+                localStorage.removeItem("apps")
                 return AppApi.delete(app.id)
                 .then((res)=>{
                     console.log(res);
@@ -89,20 +125,22 @@ const EditApp = () => {
     const save = (e) => {
         e.preventDefault();
         setError(undefined)
-        const formErrors = validateForm()
-        if(Object.keys(formErrors).length > 0){
-            return setErrors(formErrors)
-        } 
-        setLoading(true);
-
-        let formData = new FormData();
-
-        for(let key in app){
-            formData.append(key,app[key])
+        if(Object.keys(uptadedApp).length <= 0){
+            return history.push('/apps');
         }
 
-        AppApi.update(app.id, formData).then((res)=>{
+        setLoading(true);
+        const formErrors = validateForm()
+        if(Object.keys(formErrors).length > 0){
+            setLoading(false);
+            return setErrors(formErrors)
+        }
+        let data = {...app}
+        console.log(data);
+
+        AppApi.update(app.id, data).then((res)=>{
             console.log(res);
+            localStorage.removeItem('apps');
             history.push('/apps');
         }).catch((err)=>{
             if (err.response.data) {
@@ -150,6 +188,7 @@ const EditApp = () => {
                                             <small className={`mt-3 text-center ${uploadMessage.color}`} >{uploadMessage.text}</small>
                                             <FormControl type="file" id="logo_app" name="logo_app" accept="image/*" ref={fileRef} onChange={handleInputFileChange} hidden />
                                         </Card>
+                                        <ProgressBar className={(progress === 0 ) && "d-none"} animated now={progress} />
                                     </Col>
                                     <Col></Col>
                                     <Col md={8} >
@@ -188,6 +227,24 @@ const EditApp = () => {
                                                 </InputGroup>
                                             </Col>
                                         </Form.Group>
+                                        <Form.Group as={Row} className="mb-3">
+                                            <Form.Label column sm={3}> Type d'application </Form.Label>
+                                            <Col className="mt-2">
+                                                <div className="form-check">
+                                                    <input name="type_app" type="radio" id="type_app_0" className="form-check-input" value="0" 
+                                                           style={{"cursor":"pointer"}} checked={(app.type_app === 0)} onChange={handleCheckChange}/>
+                                                    <label title="" htmlFor="type_app_0" className="form-check-label" style={{"cursor":"pointer"}}>Application par défaut</label>
+                                                </div>
+                                            </Col>
+                                            <Col className="mt-2">
+                                                <div className="form-check">
+                                                    <input name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
+                                                           style={{"cursor":"pointer"}} checked={(app.type_app === 1)} onChange={handleCheckChange}/>
+                                                    <label title="" htmlFor="type_app_1" className="form-check-label" style={{"cursor":"pointer"}}>Application privilegiée</label>
+                                                </div>
+                                                {/* <Form.Check style={{"cursor":"pointer"}} checked={(app.type_app === 1)} type="radio" id="type_app_1" name="type_app" label="Application privilegiée" value="1" onChange={()=>setApp({...app, type_app : 1})} /> */}
+                                            </Col>
+                                        </Form.Group>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -208,19 +265,26 @@ const EditApp = () => {
                                         )}
 
                                         {(loading && (
-                                            <Button variant="primary" className="pull-right" disabled>
+                                            <Button variant="primary" size="sm" className="pull-right mt-2" disabled>
                                                 <Spinner as="span" className="mr-2" size="sm" animation="border" role="status" aria-hidden="true" />
                                                 Veuillez patientez ...
                                             </Button>
                                         )) || (
-                                            <div className="pull-right mt-2">
-                                                <Button variant="danger" onClick={remove}>
+                                            <>
+                                                <Button className="mt-2" variant="danger" size="sm" onClick={remove}>
                                                     <i className="feather icon-trash"></i>Supprimer
                                                 </Button>
-                                                <Button type="submit" variant="primary" onClick={save}>
-                                                    <i className="feather icon-save"></i>Sauvegarder
-                                                </Button>
-                                            </div>
+                                                <div className="pull-right mt-2">
+                                                    <Link to="/apps">
+                                                        <Button variant="secondary" size="sm">
+                                                            <i className="feather icon-x-circle"></i>Annuler
+                                                        </Button>
+                                                    </Link>
+                                                    <Button type="submit" size="sm" variant="primary">
+                                                        <i className="feather icon-save"></i>Sauvegarder
+                                                    </Button>
+                                                </div>
+                                            </>
                                         )}
 
                                     </Col>

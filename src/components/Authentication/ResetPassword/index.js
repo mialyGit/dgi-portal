@@ -7,7 +7,7 @@ import Breadcrumb from "../../../App/layout/AdminLayout/Breadcrumb";
 import AuthApi from "../../../utils/auth";
 import { useAuth } from "../../../auth-context/auth.context";
 
-const SignIn = () => {
+const ResetPassword = () => {
 
     const history = useHistory();
     const { setUserSession } = useAuth();
@@ -139,4 +139,4 @@ const SignIn = () => {
     );
 }
 
-export default SignIn;
+export default ResetPassword;

@@ -83,6 +83,7 @@ const NavRight = (props) => {
                 </li>
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => setListOpen(true)}><i className="icon feather icon-mail"/></a>
+                    <span className="badge badge-danger badge-sm navbar-badge"></span>
                 </li>
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <Link to="/profile">

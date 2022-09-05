@@ -5,6 +5,7 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     const fileRef = useRef();
     const [errors, setErrors] = useState({});
     const [preview, setPreview] = useState(user.file);
+    const [progress, setProgress] = useState(0)
     const [uploadMessage, setUploadMessage] = useState({
         color : "text-muted",
         text : user.file ? user.file : "Veuillez importer une icône ici"
@@ -41,6 +42,30 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
         }
     }
 
+    function handleEvent(e) {
+        setTimeout(() => {
+            const value = parseInt( ((e.loaded / e.target.fileSize) * 100), 10 );
+            setProgress(value)
+            if (e.type === "loadend") {
+                handleFileChange(e.target.result);
+                setUploadMessage({color: "text-muted", text: e.target.fileName})
+                setPreview(e.target.result);
+                setTimeout(() => {
+                    setProgress(0)
+                }, 100); 
+            }
+        }, 500);
+    }
+    
+    function addListeners(reader) {
+        reader.addEventListener('loadstart', handleEvent);
+        reader.addEventListener('load', handleEvent);
+        reader.addEventListener('loadend', handleEvent);
+        reader.addEventListener('progress', handleEvent);
+        reader.addEventListener('error', handleEvent);
+        reader.addEventListener('abort', handleEvent);
+    }
+
     const handleInputFileChange = event => {
         const image = event.target.files[0]
         var ext = ["jpg","jpeg","png"]
@@ -48,12 +73,16 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
             var fileExtension = image.name.split('.').pop().toLowerCase()
             if(ext.indexOf(fileExtension)>-1){
                 const reader = new FileReader();
-                reader.onload = ({ target: { result } }) => {
+                reader.fileName = image.name;
+                reader.fileSize = image.size;
+                addListeners(reader);
+                /*reader.onload = ({ target: { result } }) => {
                     setUploadMessage({color: "text-muted", text: image.name})
                     setPreview(result)
                     handleFileChange(result)
-                };
+                };*/
                 reader.readAsDataURL(image);
+                
             } else{
                 setUploadMessage({color: "text-danger", text: "Fichier invalide!"})
             }
@@ -85,8 +114,15 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
                             </div>
                             <div className="line"></div>
                             <div className="step">
-                                <button type="button" className="step-trigger" role="tab"  id="step-3">
+                                <button type="button" className="step-trigger" role="tab" id="step-3">
                                     <span className="bs-stepper-circle">3</span>
+                                    <span className="bs-stepper-label">Information professionelle</span>
+                                </button>
+                            </div>
+                            <div className="line"></div>
+                            <div className="step">
+                                <button type="button" className="step-trigger" role="tab"  id="step-4">
+                                    <span className="bs-stepper-circle">4</span>
                                     <span className="bs-stepper-label">Information du compte</span>
                                 </button>
                             </div>
@@ -100,7 +136,7 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
                                 <small className={`mt-3 text-center ${uploadMessage.color}`} >{uploadMessage.text}</small>
                                 <FormControl type="file" id="photo" name="photo" accept="image/*" ref={fileRef} onChange={handleInputFileChange} hidden/>
                             </Card>
-                            <ProgressBar animated now={45} />
+                            <ProgressBar className={(progress === 0 ) && "d-none"} animated now={progress} />
                         </Col>
                         <Col></Col>
                         <Col md={8} >

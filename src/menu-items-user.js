@@ -2,36 +2,36 @@ export default {
     items: [
         {
             id: 'navigation',
-            title: 'Administrateur',
+            title: 'Utilisateur',
             type: 'group',
             icon: 'icon-navigation',
             children: [
                 {
                     id: 'dashboard',
-                    title: 'Application',
+                    title: 'Consultation',
                     type: 'item',
-                    url: '/apps',
+                    url: '/_apps/ift-ifpb/consultation',
                     icon: 'feather icon-box',
                 },
                 {
                     id: 'bootstrap',
-                    title: 'Utilisateur',
+                    title: 'Saisie',
                     type: 'item',
                     icon: 'feather icon-users',
-                    url: '/users'
+                    url: '/_apps/ift-ifpb/saisie'
                 },
                 {
                     id: 'privilege',
-                    title: 'Privilège',
+                    title: 'Autre',
                     type: 'item',
                     icon: 'feather icon-shield',
-                    url: '/privileges'
+                    url: '/_apps/ift-ifpb/autre'
                 },
             ]
         },
         {
             id: 'ui-element',
-            title: 'Compte',
+            title: 'Utilisateur',
             type: 'group',
             icon: 'icon-ui',
             children: [

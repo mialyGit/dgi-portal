@@ -68,8 +68,15 @@ const CompteForm = ({user, handleInputChange, prevStep, save , loading}) => {
                             </div>
                             <div className="line"></div>
                             <div className="step active">
-                                <button type="button" className="step-trigger" role="tab"  id="step-3">
+                                <button type="button" className="step-trigger" role="tab" id="step-3">
                                     <span className="bs-stepper-circle">3</span>
+                                    <span className="bs-stepper-label">Information professionelle</span>
+                                </button>
+                            </div>
+                            <div className="line"></div>
+                            <div className="step active">
+                                <button type="button" className="step-trigger" role="tab"  id="step-4">
+                                    <span className="bs-stepper-circle">4</span>
                                     <span className="bs-stepper-label">Information du compte</span>
                                 </button>
                             </div>

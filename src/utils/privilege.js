@@ -1,12 +1,16 @@
 import axios from "./index";
 
-class UserApi {
+class PrivilegeApi {
   static getAll = () => {
     return axios.get(`${base}`);
   };
 
+  static get = (id) => {
+    return axios.get(`${base}/${id}`);
+  };
+
   static add = (data) => {
-    return axios.post(`${base}/register`, data);
+    return axios.post(`${base}`, data);
   };
 
   static delete = (id) => {
@@ -15,11 +19,8 @@ class UserApi {
 
   static update = (data,id) => {
     return axios.put(`${base}/${id}`, data);
-    // return axios.put(`${base}/${id}`, data);
   };
 }
+let base = "api/user_privilege_apps";
 
-// let base = "api/users";
-let base = "api/personnels";
-
-export default UserApi;
+export default PrivilegeApi;

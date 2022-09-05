@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {Row, Col, Card, Table, Spinner, Button } from 'react-bootstrap';
 import { useHistory, useLocation, Link } from 'react-router-dom'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import UserApi from "../../utils/user";
-import { API_SERVER } from "../../config/constant";
-import { errorModal, deleteModal, Toast } from "../Common/SweetModal"
-import Aux from "../../hoc/_Aux";
-import Avatar2 from "../../assets/images/user/avatar-2.jpg"
+import UserApi from "utils/user";
+import { API_SERVER } from "config/constant";
+import { errorModal, deleteModal, Toast } from "../../Common/SweetModal"
+import Aux from "hoc/_Aux";
+import Avatar2 from "assets/images/user/avatar-2.jpg"
 
 const Utilisateur = () => {
     const history = useHistory();
@@ -18,6 +19,10 @@ const Utilisateur = () => {
 
     const defaultSrcImg = (e) => {
         e.target.src = Avatar2
+    }
+
+    const voir_details = (item) => {
+        history.push({pathname: '/users/details', state: {item}})
     }
 
     const remove = (id) => {
@@ -84,6 +89,7 @@ const Utilisateur = () => {
                                     <tr>
                                         <td>#</td>
                                         <td>Utilisateur</td>
+                                        <td>Droit d'utilisation</td>
                                         <td>Date de création</td>
                                         <td>Options</td>
                                     </tr>
@@ -94,16 +100,19 @@ const Utilisateur = () => {
                                     ) :
                                     rows.length > 0 ?
                                         rows.map((item) => (
-                                            <tr className="unread" key={item.id}>
-                                                <td><img onError={defaultSrcImg} className="rounded-circle" style={{width: '40px'}} src={ path + item.photo } alt="activity-user"/></td>
+                                            <tr className="unread" key={item.id} style={{"cursor":"pointer"}} onClick={() => voir_details(item)}>
+                                                <td><LazyLoadImage onError={defaultSrcImg} className="rounded-circle" style={{width: '40px'}} src={ path + item.photo } alt="activity-user"/></td>
                                                 <td>
                                                     <h6 className="mb-1">{item.nom} {item.prenom}</h6>
                                                     <small className="m-0">{item.email}</small>
                                                 </td>
                                                 <td>
+                                                    <h6 className="mb-1">{item.libelle_type}</h6>
+                                                </td>
+                                                <td>
                                                     <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>11 MAY 12:56</h6>
                                                 </td>
-                                                <td><button className="theme-bg-btn red" onClick={() => remove(item.id)}>Supprimer</button><button className="theme-bg-btn blue">Approuver</button></td>
+                                                <td><button className="theme-bg-btn red" onClick={() => remove(item.id)}>Supprimer</button><button className="theme-bg-btn blue" onClick={() => voir_details(item)} >Détails</button></td>
                                             </tr>
                                         )) : (
                                             <tr className="unread text-center">

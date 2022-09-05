@@ -9,6 +9,7 @@ import OutsideClick from './OutsideClick';
 import Aux from './../../../../hoc/_Aux'
 import * as actionTypes from './../../../../store/actions';
 import navigation from '../../../../menu-items';
+import navigation_user from '../../../../menu-items-user';
 
 class Navigation extends Component {
 
@@ -108,7 +109,7 @@ class Navigation extends Component {
         let navContent = (
             <div className="navbar-wrapper">
                 <NavLogo collapseMenu={this.props.collapseMenu} windowWidth={this.props.windowWidth} onToggleNavigation={this.props.onToggleNavigation} />
-                <NavContent navigation={navigation.items} />
+                <NavContent navigation={ window.location.href.indexOf("/_apps/") > -1 ? navigation_user.items : navigation.items} />
             </div>
         );
         if (this.props.windowWidth < 992) {
@@ -116,7 +117,7 @@ class Navigation extends Component {
                 <OutsideClick>
                     <div className="navbar-wrapper">
                         <NavLogo collapseMenu={this.props.collapseMenu} windowWidth={this.props.windowWidth} onToggleNavigation={this.props.onToggleNavigation} />
-                        <NavContent navigation={navigation.items} />
+                        <NavContent navigation={ window.location.href.indexOf("/_apps/") > -1 ? navigation_user.items : navigation.items} />
                     </div>
                 </OutsideClick>
             );

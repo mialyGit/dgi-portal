@@ -16,6 +16,6 @@ class AuthApi {
   };
 }
 
-let base = "api/users";
+let base = "api/personnels";
 
 export default AuthApi;
