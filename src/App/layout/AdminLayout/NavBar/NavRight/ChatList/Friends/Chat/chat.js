@@ -21,7 +21,7 @@ export default [
         ]
     },
     {
-        friend_id: 2,
+        friend_id: 20,
         friend_photo: 'avatar-2.jpg',
         messages: [
             {

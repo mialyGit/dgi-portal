@@ -2,7 +2,7 @@ import React, {useRef, useState } from 'react';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, ProgressBar } from 'react-bootstrap';
 
 import Aux from "../../hoc/_Aux";
-import { API_SERVER } from "../../config/constant";
+import { API_SERVER, basename } from "../../config/constant";
 import { useAuth } from "../../auth-context/auth.context";
 
 const Profile = () => {
@@ -62,7 +62,7 @@ const Profile = () => {
     //     setCurrentUser({...defaultValues});
     // }
     const defaultSrcImg = (e) => {
-        e.target.src = "/portals/no-import.png"
+        e.target.src = basename + "/no-import.png"
     }
 
     const handleInputChange = (e) => {

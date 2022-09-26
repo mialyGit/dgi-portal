@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import {Form, InputGroup, FormControl, Row, Col, Card, Button, Spinner, ProgressBar} from 'react-bootstrap';
 import Aux from "hoc/_Aux";
 import AppApi from 'utils/app';
+import { basename } from 'config/constant';
 
 const AddApp = () => {
     const fileRef = useRef();
@@ -21,7 +22,7 @@ const AddApp = () => {
     const [errors, setErrors] = useState({});
     const [error, setError] = useState(undefined);
     const [progress, setProgress] = useState(0)
-    const [preview, setPreview] = useState("/portals/no-import.png");
+    const [preview, setPreview] = useState(basename + "/no-import.png");
     const [uploadMessage, setUploadMessage] = useState({
         color : "text-muted",
         text : "Veuillez importer une icône ici"
@@ -115,7 +116,7 @@ const AddApp = () => {
         }
 
         let data = {...app}
-        if(data.type_app === 1) data.lien_app = `/portals/_apps${data.lien_app}`
+        if(data.type_app === 1) data.lien_app = `${basename}/_apps${data.lien_app}`
 
         console.log(data);
         AppApi.add(data).then((res)=>{

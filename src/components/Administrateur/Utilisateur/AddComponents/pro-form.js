@@ -11,12 +11,10 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
     // let services = JSON.parse(localStorage.getItem('services') || '[]')
 
     const loadType = (input,cb) => {
-        let json =  JSON.parse(localStorage.getItem('type_users') || '[]')
-        /*if(json.length === 0){
-            let response = await fetch('http://localhost:8000/api/type_users')
-            json = await response.json()
-            localStorage.setItem('type_users',JSON.stringify(json))
-        }*/
+        let json =  [
+            {id:0, libelle_type:'Utilisateur'},
+            {id:1, libelle_type:'Administrateur'},
+        ]
         cb(json.map( row => ({
             label: row.libelle_type, 
             value: row.id, 
@@ -25,6 +23,9 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
     }
 
     const loadGrade = (input,cb) => {
+        // let res = await fetch('http://localhost:8000/api/grades')
+        // let json = await res.json()
+        // localStorage.setItem('grades', JSON.stringify(json))
         let json = JSON.parse(localStorage.getItem('grades') || '[]')
         cb(json.map( row => ({
             label: row.nom_gr, 
@@ -34,12 +35,19 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
     }
 
     const loadService = (input,cb) => {
+        // let res = await fetch('http://localhost:8000/api/services')
+        // let json = await res.json()
+        // localStorage.setItem('services', JSON.stringify(json))
         let json = JSON.parse(localStorage.getItem('services') || '[]')
         cb(json.map( row => ({label: row.nom_sc, value: parseInt(row.id)})))
     }
 
     const loadFonction = (input,cb) => {
+        // let res = await fetch('http://localhost:8000/api/fonctions')
+        // let json = await res.json()
+        // localStorage.setItem('fonctions', JSON.stringify(json))
         let json = JSON.parse(localStorage.getItem('fonctions') || '[]')
+
         json = json.filter((el) => el.service_id === service)
         cb(json.map( row => ({
             label: row.nom_fn, 
@@ -82,7 +90,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
         if(!service_id || service_id === 0) newErrors.service_id = "Veuillez entrer le service du personnel"
         if(!fonction_id || fonction_id === 0) newErrors.fonction_id = "Veuillez entrer la fonction du personnel"
         if(!grade_id || grade_id === 0) newErrors.grade_id = "Veuillez entrer le grade du personnel"
-        if(!type_user_id || type_user_id === 0) newErrors.type_user_id = "Veuillez entrer le type de l'utilisateur"
+        if(type_user_id === -1) newErrors.type_user_id = "Veuillez entrer le type de l'utilisateur"
         return newErrors
     }
 

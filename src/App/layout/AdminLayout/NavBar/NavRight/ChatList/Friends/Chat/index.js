@@ -1,7 +1,7 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-import chatMsg from './chat';
+//import chatMsg from './chat';
 import Messages from './Messages';
 import Aux from "../../../../../../../../hoc/_Aux";
 import DEMO from "../../../../../../../../store/constant";
@@ -16,20 +16,26 @@ const chat = (props) => {
         <div className="media chat-messages text-center">
             <div className="media-body chat-menu-content">
                 <div className="">
-                    <p className="chat-cont">CHAT NOT FOUND</p>
+                    <p className="chat-cont">Aucune conversation</p>
                 </div>
             </div>
         </div>
     );
 
-    chatMsg.filter(chats => {
+    /*chatMsg.filter(chats => {
         if (chats.friend_id === props.user.id) {
             message = (chats.messages).map((msg, index) => {
-                return <Messages key={index} message={msg} name={props.user.name} photo={chats.friend_photo} />;
+                return <Messages key={index} message={msg} name={props.user.name} photo={props.user.photo} />;
             });
         }
         return false;
-    });
+    });*/
+
+    if (props.messages.length > 0) {
+        message = props.messages.map((msg, index) => {
+            return <Messages key={index} message={msg} user={props.user} />;
+        });
+    }
 
     return (
         <Aux>
@@ -53,8 +59,8 @@ const chat = (props) => {
                         <a href={DEMO.BLANK_LINK} className="input-group-prepend btn btn-success btn-attach">
                             <i className="feather icon-paperclip" />
                         </a>
-                        <input type="text" name="h-chat-text" className="form-control h-send-chat" placeholder="Write hear . . " />
-                        <button type="submit" className="input-group-append btn-send btn btn-primary">
+                        <input type="text" name="h-chat-text" value={props.text} onChange={props.onChangeText} className="form-control h-send-chat" placeholder="Write hear . . " />
+                        <button type="submit" className="input-group-append btn-send btn btn-primary" onClick={props.sendMessage}>
                             <i className="feather icon-message-circle" />
                         </button>
                     </div>

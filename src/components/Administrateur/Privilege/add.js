@@ -37,13 +37,13 @@ const AddPrivilege = () => {
         })))
     }
 
-    const loadPrivilege = (input,cb) => {
+    const loadPrivilege = async(input,cb) => {
         let json = JSON.parse(localStorage.getItem('privileges') || '[]')
-        /*if(json.length === 0){
+        if(json.length === 0){
             let response = await fetch('http://localhost:8000/api/privileges')
             json = await response.json()
             localStorage.setItem('privileges',JSON.stringify(json))
-        }*/
+        }
         cb(json.map( row => ({
             label: `${row.nom_privilege}`, 
             value: row.id, 
@@ -174,7 +174,7 @@ const AddPrivilege = () => {
                                 </Button>
                             )) || (
                                 <div className="pull-right mt-2">
-                                    <Link to="/apps">
+                                    <Link to="/users">
                                         <Button variant="secondary" size="sm">
                                             <i className="feather icon-x-circle"></i>Annuler
                                         </Button>

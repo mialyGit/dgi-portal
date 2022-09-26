@@ -122,7 +122,7 @@ const NavRight = (props) => {
                     </Dropdown>
                 </li> */}
             </ul>
-            <ChatList listOpen={listOpen} closed={() => setListOpen(false)} />
+            <ChatList userConnected={userSession} listOpen={listOpen} closed={() => setListOpen(false)} />
         </Aux>
     );
 }

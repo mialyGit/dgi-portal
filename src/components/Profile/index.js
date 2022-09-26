@@ -6,7 +6,7 @@ import { useAuth } from "../../auth-context/auth.context";
 import CompteForm from './EditComponents/compte-form';
 import PersForm from './EditComponents/pers-form';
 import CinForm from './EditComponents/cin-form';
-import UserApi from 'utils/user';
+import PersApi from 'utils/pers';
 import { errorModal } from "../Common/SweetModal"
 
 const Profile = () => {
@@ -74,7 +74,7 @@ const Profile = () => {
             setLoading(true)
             if(uptadedCin) setUpdtatedUser({...uptadedUser, cin : JSON.stringify(cin)})
 
-            return UserApi.update(uptadedUser,user.id).then((res)=>{
+            return PersApi.update(uptadedUser,user.id).then((res)=>{
                 console.log(res);
                 let newValue = { ...res.data.user };
                 newValue = JSON.stringify(newValue);

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { API_SERVER } from "../../../config/constant";
+import { API_SERVER, basename } from "../../../config/constant";
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap';
 
 const PersForm = ({ user, handleChange , handleFileChange, save, cancel, loading }) => {
@@ -16,8 +16,8 @@ const PersForm = ({ user, handleChange , handleFileChange, save, cancel, loading
 
     const defaultSrcImg = (e) => {
         const mode = e.target.id
-        mode === "edit_mode" ? e.target.src = "/portals/no-import.png" :
-        e.target.src = "/portals/user-icon-default.png";
+        mode === "edit_mode" ? e.target.src = basename + "/no-import.png" :
+        e.target.src = basename + "/user-icon-default.png";
     }
 
     const handleInputChange = (e) => {

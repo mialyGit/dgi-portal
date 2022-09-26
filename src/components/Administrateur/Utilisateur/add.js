@@ -9,7 +9,7 @@ import ProForm from './AddComponents/pro-form';
 import { errorModal } from "../../Common/SweetModal"
 
 import Aux from "hoc/_Aux";
-import UserApi from 'utils/user';
+import PersApi from 'utils/pers';
 
 const AddUser = () => {
     const history = useHistory();
@@ -28,7 +28,7 @@ const AddUser = () => {
         num_matricule : faker.phone.number('######'),
         fonction_id : 0,
         grade_id : 0,
-        type_user_id : 0
+        type_user_id : -1
     }
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -74,7 +74,7 @@ const AddUser = () => {
         // let str_cin = new Blob([JSON.stringify({})], { type: 'application/json'})
         let data = {...user}
         data.cin = JSON.stringify(cin)
-        UserApi.add(data).then((res)=>{
+        PersApi.add(data).then((res)=>{
             console.log(res);
             localStorage.removeItem("users")
             let newValue = res.data.user

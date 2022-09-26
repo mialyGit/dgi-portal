@@ -1,12 +1,12 @@
 import axios from "./index";
 
-class UserApi {
+class PersApi {
   static getAll = () => {
     return axios.get(`${base}`);
   };
 
   static add = (data) => {
-    return axios.post(`${base}/register`, data);
+    return axios.post(`${base}`, data);
   };
 
   static delete = (id) => {
@@ -22,4 +22,4 @@ class UserApi {
 // let base = "api/users";
 let base = "api/personnels";
 
-export default UserApi;
+export default PersApi;

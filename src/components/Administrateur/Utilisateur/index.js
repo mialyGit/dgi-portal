@@ -3,7 +3,7 @@ import {Row, Col, Card, Table, Spinner, Button } from 'react-bootstrap';
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import UserApi from "utils/user";
+import PersApi from "utils/pers";
 import { API_SERVER } from "config/constant";
 import { errorModal, deleteModal, Toast } from "../../Common/SweetModal"
 import Aux from "hoc/_Aux";
@@ -30,7 +30,7 @@ const Utilisateur = () => {
             preConfirm: () => {
                 deleteModal().getCancelButton().setAttribute("style","display:none")
                 localStorage.removeItem("users")
-                return UserApi.delete(id)
+                return PersApi.delete(id)
                 .then((res)=>{
                     Toast().fire(res.data.message,'','success');
                 }).catch((err)=>{
@@ -52,7 +52,7 @@ const Utilisateur = () => {
             setLoading(false);
             return setRows(data)
         }
-        UserApi.getAll().then((res) => {
+        PersApi.getAll().then((res) => {
             const { data } = res;
             setRows(data);
             localStorage.setItem("users", JSON.stringify(data))
@@ -107,7 +107,7 @@ const Utilisateur = () => {
                                                     <small className="m-0">{item.email}</small>
                                                 </td>
                                                 <td>
-                                                    <h6 className="mb-1">{item.libelle_type}</h6>
+                                                    <h6 className="mb-1">{item.type_user_id === 1 ? 'Administrateur':'Utilisateur' }</h6>
                                                 </td>
                                                 <td>
                                                     <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>11 MAY 12:56</h6>

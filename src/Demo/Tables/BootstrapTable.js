@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Row, Col, Card, Table, Spinner} from 'react-bootstrap';
 
-import UserApi from "../../utils/user";
+import PersApi from "../../utils/pers";
 import { API_SERVER } from "../../config/constant";
 
 import Aux from "../../hoc/_Aux";
@@ -13,7 +13,7 @@ function BootstrapTable() {
     const [loading, setLoading] = useState(true)
 
     const getAll = () => {
-        UserApi.getAll().then((res) => {
+        PersApi.getAll().then((res) => {
             const { data } = res;
             setRows(data.slice(0, 8));
         }).finally((res) => {

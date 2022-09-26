@@ -3,7 +3,7 @@ import {Row, Col, Card, Spinner, Button} from 'react-bootstrap';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Aux from "hoc/_Aux";
-import { API_SERVER } from "config/constant";
+import { API_SERVER, basename } from "config/constant";
 import { errorModal, Toast } from "../../Common/SweetModal"
 import AppApi from 'utils/app';
 
@@ -18,7 +18,7 @@ const Application = () =>  {
     const [loading, setLoading] = useState(true);
 
     const defaultSrcImg = (e) => {
-        e.target.src = "/portals/default-logo.png"
+        e.target.src = basename + "/default-logo.png"
     }
 
     const getAll = () => {

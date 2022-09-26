@@ -3,7 +3,7 @@ import { useHistory, useLocation} from 'react-router-dom'
 import {Table, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { errorModal, Toast } from "../../Common/SweetModal"
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { API_SERVER } from "config/constant";
+import { API_SERVER, basename } from "config/constant";
 import Aux from "hoc/_Aux";
 import PrivilegeApi from 'utils/privilege';
 
@@ -23,8 +23,8 @@ const UserDetails = () => {
     
     const defaultSrcImg = (e) => {
         /*const mode = e.target.id
-        mode === "edit_mode" ? e.target.src = "/portals/default-icon.png" :*/
-        e.target.src = "/portals/user-icon-default.png";
+        mode === "edit_mode" ? e.target.src = basename + "/default-icon.png" :*/
+        e.target.src = basename + "/user-icon-default.png";
     }
 
     const getAll = (id) => {

@@ -1,3 +1,4 @@
+import { basename } from 'config/constant';
 import React, { useRef, useState } from 'react';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, ProgressBar } from 'react-bootstrap';
 
@@ -20,7 +21,7 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     }
 
     const defaultSrcImg = (e) => {
-        e.target.src = "/portals/no-import.png"
+        e.target.src = basename + "/no-import.png"
     }
 
     const validateForm = () => {

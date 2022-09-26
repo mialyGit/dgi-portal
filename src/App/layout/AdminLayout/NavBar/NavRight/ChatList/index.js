@@ -25,7 +25,7 @@ const chatList = (props) => {
                     <div className="main-friend-cont scroll-div">
                         <div className="main-friend-list" style={{height: 'calc(100vh - 85px)'}}>
                             <PerfectScrollbar>
-                                <Friends listOpen={props.listOpen} />
+                                <Friends userConnected={props.userConnected} listOpen={props.listOpen} />
                             </PerfectScrollbar>
                         </div>
                     </div>

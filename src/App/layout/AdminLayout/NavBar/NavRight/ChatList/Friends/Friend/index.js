@@ -2,10 +2,11 @@ import React from 'react';
 
 import Aux from "../../../../../../../../hoc/_Aux";
 import DEMO from "../../../../../../../../store/constant";
-const images = require.context('../../../../../../../../assets/images/user', true);
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+//const images = require.context('../../../../../../../../assets/images/user', true);
 
 const friend = (props) => {
-    let photo = images(`./${props.data.photo}`);
+    //let photo = images(`./${props.data.photo}`);
     let timeClass = ['d-block'];
     if (props.data.status) {
         timeClass = [...timeClass, 'text-c-green'];
@@ -26,7 +27,7 @@ const friend = (props) => {
     return (
         <Aux>
             <div className={props.activeId === props.data.id ? 'media userlist-box ripple active' : 'media userlist-box ripple'} onClick={props.clicked}>
-                <a className="media-left" href={DEMO.BLANK_LINK}> <img className="media-object img-radius" src={photo} alt={props.data.name}/>{newFriend}</a>
+                <a className="media-left" href={DEMO.BLANK_LINK}> <LazyLoadImage className="media-object img-radius" src={props.data.photo} alt={props.data.name}/>{newFriend}</a>
                 <div className="media-body">
                     <h6 className="chat-header">{props.data.name}{time}</h6>
                 </div>
