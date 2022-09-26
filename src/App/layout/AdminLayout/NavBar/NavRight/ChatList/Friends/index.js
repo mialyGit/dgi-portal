@@ -13,6 +13,7 @@ class Friends extends Component {
         text: '',
         messages : [],
         friend: [],
+        lastOpen: false
     };
 
     sendMessage() {
@@ -65,11 +66,20 @@ class Friends extends Component {
         this.getFriendMessages()
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    static getDerivedStateFromProps(props) {
+        if (!props.listOpen) {
+          return {chatOpen: false, user: {}, messages:[], text: ''}
+        }
+    
+        // Return null to indicate no change to state.
+        return null;
+      }
+
+    /*componentWillReceiveProps = (nextProps) => {
         if (!nextProps.listOpen) {
             this.setState({chatOpen: false, user: {}, messages:[], text: ''});
         }
-    };
+    };*/
 
     render() {
         const friendList = (this.state.friend).map(f => {
