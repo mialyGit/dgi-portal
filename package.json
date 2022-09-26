@@ -2,7 +2,7 @@
   "name": "dgi-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mialigit.github.io/dgi-portal",
+  "homepage": "https://mialygit.github.io/dgi-portal",
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
@@ -30,7 +30,7 @@
     "sweetalert2": "^11.4.24"
   },
   "scripts": {
-    "deploy": "npm run  build && gh-pages -d build",
+    "deploy": "npm run build && gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -45,6 +45,10 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "engines": {
+    "node": "v14.19.0",
+    "npm" : "6.14.16"
+  },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
     "gh-pages": "^4.0.0",
