@@ -2,7 +2,6 @@
   "name": "dgi-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mialygit.github.io/dgi-portal",
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
