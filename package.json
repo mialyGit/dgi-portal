@@ -2,7 +2,7 @@
   "name": "dgi-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://frozen-retreat-88569.herokuapp.com/",
+  "homepage": "https://dgi-portal.herokuapp.com/",
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
