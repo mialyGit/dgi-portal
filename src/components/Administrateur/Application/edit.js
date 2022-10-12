@@ -101,6 +101,7 @@ const EditApp = () => {
         if(!code_app || code_app.trim() === '') newErrors.code_app = "Veuillez entrer le code de l'application"
         if(!nom_app || nom_app.trim() === '') newErrors.nom_app = "Veuillez entrer le nom de l'application"
         if(!lien_app || lien_app.trim() === '') newErrors.lien_app = "Veuillez entrer le lien vers l'application"
+        else if(!lien_app.trim().startsWith('http://') && !lien_app.trim().startsWith('https://')) newErrors.lien_app = "Veuillez entrer une url valide"
         return newErrors
     }
 

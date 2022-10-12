@@ -94,13 +94,15 @@ const AddApp = () => {
     }*/
 
     const validateForm = () => {
-        const {code_app, nom_app, lien_app, type_app } = app;
+        // const {code_app, nom_app, lien_app, type_app } = app;
+        const {code_app, nom_app, lien_app } = app;
         const newErrors = {}
         if(!code_app || code_app.trim() === '') newErrors.code_app = "Veuillez entrer le code de l'application"
         if(!nom_app || nom_app.trim() === '') newErrors.nom_app = "Veuillez entrer le nom de l'application"
         if(!lien_app || lien_app.trim() === '') newErrors.lien_app = "Veuillez entrer le lien vers l'application"
-        else if(type_app === 0 && !lien_app.trim().startsWith('http://') && !lien_app.trim().startsWith('https://')) newErrors.lien_app = "Veuillez entrer une url valide"
-        else if(type_app === 1 && !lien_app.trim().startsWith('/')) newErrors.lien_app = "Le lien vers l'application privilegiée doit commencer par '/'"
+        else if(!lien_app.trim().startsWith('http://') && !lien_app.trim().startsWith('https://')) newErrors.lien_app = "Veuillez entrer une url valide"
+        /*else if(type_app === 0 && !lien_app.trim().startsWith('http://') && !lien_app.trim().startsWith('https://')) newErrors.lien_app = "Veuillez entrer une url valide"
+        else if(type_app === 1 && !lien_app.trim().startsWith('/')) newErrors.lien_app = "Le lien vers l'application privilegiée doit commencer par '/'"*/
         return newErrors
     }
 
@@ -116,7 +118,7 @@ const AddApp = () => {
         }
 
         let data = {...app}
-        if(data.type_app === 1) data.lien_app = `${basename}/_apps${data.lien_app}`
+        //if(data.type_app === 1) data.lien_app = `${basename}/_apps${data.lien_app}`
 
         console.log(data);
         AppApi.add(data).then((res)=>{
@@ -200,10 +202,15 @@ const AddApp = () => {
                                             </Col>
                                             <Col className="mt-2">
                                                 <div className="form-check">
-                                                    <input data-example="/ift-ifpb" data-link="/" name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
+                                                    <input data-example="https://www.impots.mg" data-link="https://" name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
                                                            style={{"cursor":"pointer"}} checked={(app.type_app === 1)} onChange={handleCheckChange}/>
                                                     <label title="" htmlFor="type_app_1" className="form-check-label" style={{"cursor":"pointer"}}>Application privilegiée</label>
                                                 </div>
+                                                {/* <div className="form-check">
+                                                    <input data-example="/ift-ifpb" data-link="/" name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
+                                                           style={{"cursor":"pointer"}} checked={(app.type_app === 1)} onChange={handleCheckChange}/>
+                                                    <label title="" htmlFor="type_app_1" className="form-check-label" style={{"cursor":"pointer"}}>Application privilegiée</label>
+                                                </div> */}
                                                 {/* <Form.Check style={{"cursor":"pointer"}} checked={(app.type_app === 1)} type="radio" id="type_app_1" name="type_app" label="Application privilegiée" value="1" onChange={()=>setApp({...app, type_app : 1})} /> */}
                                             </Col>
                                     </Form.Group>

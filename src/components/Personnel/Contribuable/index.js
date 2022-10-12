@@ -3,7 +3,7 @@ import {Row, Col, Card, Table, Spinner, Button } from 'react-bootstrap';
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import PersApi from "utils/pers";
+import ContApi from "utils/cont";
 import { API_SERVER } from "config/constant";
 import { errorModal, deleteModal, Toast } from "../../Common/SweetModal"
 import Aux from "hoc/_Aux";
@@ -22,15 +22,15 @@ const Utilisateur = () => {
     }
 
     const voir_details = (item) => {
-        history.push({pathname: '/users/details', state: {item}})
+        history.push({pathname: '/contribuables/details', state: {item}})
     }
 
     const remove = (id) => {
         deleteModal().fire({
             preConfirm: () => {
                 deleteModal().getCancelButton().setAttribute("style","display:none")
-                localStorage.removeItem("users")
-                return PersApi.delete(id)
+                localStorage.removeItem("contribuables")
+                return ContApi.delete(id)
                 .then((res)=>{
                     Toast().fire(res.data.message,'','success');
                 }).catch((err)=>{
@@ -47,17 +47,17 @@ const Utilisateur = () => {
             console.log(location.state.newValue);
             history.replace()
         }
-        const data = JSON.parse(localStorage.getItem("users"))
+        const data = JSON.parse(localStorage.getItem("contribuables"))
         if(data){
             setLoading(false);
             return setRows(data)
         }
-        PersApi.getAll().then((res) => {
+        ContApi.getAll().then((res) => {
             const { data } = res;
             setRows(data);
-            localStorage.setItem("users", JSON.stringify(data))
+            localStorage.setItem("contribuables", JSON.stringify(data))
         }).catch((err)=>{
-            localStorage.removeItem("users")
+            localStorage.removeItem("contribuables")
             errorModal(err)
         }).finally(() => {
             setLoading(false);
@@ -78,7 +78,7 @@ const Utilisateur = () => {
                         <Card.Header>
                             <Card.Title as='h5'>Liste des utilisateurs</Card.Title>
                             <div className="card-header-right">
-                                <Link to="/users/new">
+                                <Link to="/contribuables/new">
                                     <Button variant="secondary" size="sm"><i className="feather icon-user-plus"></i>AJOUTER</Button>
                                 </Link>
                             </div>
@@ -100,7 +100,7 @@ const Utilisateur = () => {
                                     ) :
                                     rows.length > 0 ?
                                         rows.map((item) => (
-                                            <tr className="unread" key={item.id} style={{"cursor":"pointer"}} onClick={() => voir_details(item)}>
+                                            <tr className="unread" key={item.id} style={{"cursor":"pointer"}}>
                                                 <td><LazyLoadImage onError={defaultSrcImg} className="rounded-circle" style={{width: '40px'}} src={ path + item.photo } alt="activity-user"/></td>
                                                 <td>
                                                     <h6 className="mb-1">{item.nom} {item.prenom}</h6>
@@ -110,9 +110,9 @@ const Utilisateur = () => {
                                                     <h6 className="mb-1">{item.type_user_id === 1 ? 'Administrateur':'Utilisateur' }</h6>
                                                 </td>
                                                 <td>
-                                                    <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>11 MAY 12:56</h6>
+                                                    <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>{item.created_at }</h6>
                                                 </td>
-                                                <td><button className="theme-bg-btn red" onClick={() => remove(item.id)}>Supprimer</button><button className="theme-bg-btn blue" onClick={() => voir_details(item)} >Détails</button></td>
+                                                <td><button className="theme-bg-btn red" onClick={() => remove(item.contribuable.id)}>Supprimer</button><button className="theme-bg-btn blue" onClick={() => voir_details(item)} >Détails</button></td>
                                             </tr>
                                         )) : (
                                             <tr className="unread text-center">

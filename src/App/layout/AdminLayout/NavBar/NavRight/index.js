@@ -29,17 +29,18 @@ const NavRight = (props) => {
                         <Dropdown.Toggle variant={'link'} id="dropdown-basic">
                             <i className="icon feather icon-bell"/>
                         </Dropdown.Toggle>
+                        <span className="badge badge-info badge-sm navbar-badge">1</span>
                         <Dropdown.Menu alignRight className="notification">
                             <div className="noti-head">
                                 <h6 className="d-inline-block m-b-0">Notifications</h6>
                                 <div className="float-right">
-                                    <a href={DEMO.BLANK_LINK} className="m-r-10">mark as read</a>
-                                    <a href={DEMO.BLANK_LINK}>clear all</a>
+                                    <a href={DEMO.BLANK_LINK} className="m-r-10">Marquer comme lu</a>
+                                    {/* <a href={DEMO.BLANK_LINK}>Effacer tout</a> */}
                                 </div>
                             </div>
                             <ul className="noti-body">
                                 <li className="n-title">
-                                    <p className="m-b-0">NEW</p>
+                                    <p className="m-b-0">NOUVEAU</p>
                                 </li>
                                 <li className="notification">
                                     <div className="media">
@@ -47,12 +48,12 @@ const NavRight = (props) => {
                                         <div className="media-body">
                                             <p><strong>{userSession.nom}</strong><span className="n-time text-muted"><i
                                                 className="icon feather icon-clock m-r-10"/>30 min</span></p>
-                                            <p>New ticket Added</p>
+                                            <p>Demande d'activation compte</p>
                                         </div>
                                     </div>
                                 </li>
                                 <li className="n-title">
-                                    <p className="m-b-0">EARLIER</p>
+                                    <p className="m-b-0">ANCIEN</p>
                                 </li>
                                 <li className="notification">
                                     <div className="media">
@@ -60,7 +61,7 @@ const NavRight = (props) => {
                                         <div className="media-body">
                                             <p><strong>Joseph William</strong><span className="n-time text-muted"><i
                                                 className="icon feather icon-clock m-r-10"/>30 min</span></p>
-                                            <p>Prchace New Theme and make payment</p>
+                                            <p>Connexion au portail</p>
                                         </div>
                                     </div>
                                 </li>
@@ -70,20 +71,20 @@ const NavRight = (props) => {
                                         <div className="media-body">
                                             <p><strong>Sara Soudein</strong><span className="n-time text-muted"><i
                                                 className="icon feather icon-clock m-r-10"/>30 min</span></p>
-                                            <p>currently login</p>
+                                            <p>Supprimer un personnel</p>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                             <div className="noti-footer">
-                                <a href={DEMO.BLANK_LINK}>show all</a>
+                                <a href={DEMO.BLANK_LINK}>Tout voir</a>
                             </div>
                         </Dropdown.Menu>
                     </Dropdown>
                 </li>
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => setListOpen(true)}><i className="icon feather icon-mail"/></a>
-                    <span className="badge badge-danger badge-sm navbar-badge"></span>
+                    <span className="badge badge-danger badge-sm navbar-badge">1</span>
                 </li>
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <Link to="/profile">

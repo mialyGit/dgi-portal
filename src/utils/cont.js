@@ -1,21 +1,12 @@
 import axios from "./index";
 
-class PersApi {
+class ContApi {
   static getAll = () => {
     return axios.get(`${base}`);
   };
 
   static getAllDemandes = () => {
     return axios.get(`api/users/demandes`);
-  };
-
-  static validateStatus = (validate, id) => {
-    if(validate) return axios.get(`api/users/validate/${id}`);
-    else return axios.get(`api/users/unvalidate/${id}`);
-  };
-
-  static unValidateStatus = (id) => {
-    return axios.get(`api/users/unvalidate/${id}`);
   };
 
   static add = (data) => {
@@ -33,6 +24,6 @@ class PersApi {
 }
 
 // let base = "api/users";
-let base = "api/personnels";
+let base = "api/contribuables";
 
-export default PersApi;
+export default ContApi;
