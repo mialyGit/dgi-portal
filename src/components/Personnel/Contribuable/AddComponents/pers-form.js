@@ -192,7 +192,7 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
                 </Card.Body>
                 <Card.Footer>
                     <div style={{display:'flex', justifyContent:'right'}}>
-                        <a href="/users" className="btn btn-secondary btn-sm"><i className="feather icon-x-circle"></i>Annuler</a>{' '}
+                        <a href="/contribuables" className="btn btn-secondary btn-sm"><i className="feather icon-x-circle"></i>Annuler</a>{' '}
                         <Button className="no-margin-btn" type="submit" variant="primary" size="sm">Confirmer <i className="feather icon-chevrons-right"></i></Button>
                     </div>
                 </Card.Footer>

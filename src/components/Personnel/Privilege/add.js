@@ -10,7 +10,7 @@ import PrivilegeApi from 'utils/privilege';
 const AddPrivilege = () => {
     const history = useHistory();
     const path = API_SERVER + 'api/';
-
+    
     const initialState = {
         user_id : 0,
         application_id : 0,
@@ -23,7 +23,7 @@ const AddPrivilege = () => {
     const [privileges, setPrivileges] = useState([])
 
     const loadUser = (input,cb) => {
-        fetch(`${path}personnels`).then((response) => response.json())
+        fetch(`${path}contribuables`).then((response) => response.json())
         .then((data) => {
           const options = []
           data.forEach((row) => {
@@ -96,16 +96,13 @@ const AddPrivilege = () => {
             newData.privilege_id = privilege_id
 
             PrivilegeApi.add(newData).then((res)=>{
-                let json = JSON.parse(localStorage.getItem('users') || '[]')
-                console.log(json);
-                if(json.length === 0) { return history.push({pathname: '/users'}); }
+                let json = JSON.parse(localStorage.getItem('contribuables') || '[]')
+                if(json.length === 0) { return history.push({pathname: '/contribuables'}); }
                 else {
                     let item = json.find(obj => obj.id === newData.user_id);
-                    console.log("ato");
-                    return history.push({pathname: '/users/details', state:{item}});
+                    return history.push({pathname: '/contribuables/details', state:{item}});
                 }
             }).catch((err)=>{
-                console.log(err);
                 if (err.response.data) {
                     setError(err.response.data.message);
                 } else setError("Erreur survenue au serveur \n Veuillez contacter l'administrateur.");
@@ -162,7 +159,7 @@ const AddPrivilege = () => {
                                     <Form.Label column sm={2}>Assigner au privilège</Form.Label>
                                     <Col>
                                         <InputGroup size="sm">
-                                            <AsyncSelect cacheOptions isMulti filterOption={filterOption} loadOptions={loadPrivilege} defaultOptions placeholder="Selectionner le privilège"  styles={ customStyles('privileges') } onChange={handleMultiInputChange} />
+                                            <AsyncSelect isMulti cacheOptions filterOption={filterOption} loadOptions={loadPrivilege} defaultOptions placeholder="Selectionner le privilège"  styles={ customStyles('privileges') } onChange={handleMultiInputChange} />
                                         </InputGroup>
                                         <small className="text-danger text-right">{errors.privileges}</small>
                                     </Col>
@@ -178,7 +175,7 @@ const AddPrivilege = () => {
                                 </Button>
                             )) || (
                                 <div className="pull-right mt-2">
-                                    <Link to="/users">
+                                    <Link to="/contribuables">
                                         <Button variant="secondary" size="sm">
                                             <i className="feather icon-x-circle"></i>Annuler
                                         </Button>

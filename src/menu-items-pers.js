@@ -2,7 +2,7 @@ export default {
     items: [
         {
             id: 'navigation',
-            title: 'Administrateur',
+            title: 'Menu',
             type: 'group',
             icon: 'icon-navigation',
             children: [
@@ -10,36 +10,22 @@ export default {
                     id: 'dashboard',
                     title: 'Application',
                     type: 'item',
-                    url: '/apps',
+                    url: '/personnels/apps',
                     icon: 'feather icon-box',
                 },
-                /*{
-                    id: 'bootstrap',
-                    title: 'Utilisateur',
-                    type: 'item',
-                    icon: 'feather icon-users',
-                    url: '/users'
-                },*/
                 {
-                    id: 'pers',
-                    title: 'Personnel',
+                    id: 'bootstrap',
+                    title: 'Contribuables',
                     type: 'item',
                     icon: 'feather icon-users',
-                    url: '/personnels'
+                    url: '/contribuables'
                 },
                 {
                     id: 'privilege',
                     title: 'Privilège',
                     type: 'item',
                     icon: 'feather icon-shield',
-                    url: '/personnels/privileges'
-                },
-                {
-                    id: 'demande',
-                    title: 'Activation compte',
-                    type: 'item',
-                    icon: 'feather icon-unlock',
-                    url: '/demandes'
+                    url: '/contribuables/privileges'
                 },
             ]
         },

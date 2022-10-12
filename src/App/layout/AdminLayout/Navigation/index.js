@@ -9,9 +9,15 @@ import OutsideClick from './OutsideClick';
 import Aux from './../../../../hoc/_Aux'
 import * as actionTypes from './../../../../store/actions';
 import navigation from '../../../../menu-items';
-import navigation_user from '../../../../menu-items-user';
+import navigation_pers from '../../../../menu-items-pers';
+import navigation_cont from '../../../../menu-items-cont';
+//import navigation_user from '../../../../menu-items-user';
 
 class Navigation extends Component {
+
+    state = {
+        items : []
+    }
 
     resize = () => {
         const contentWidth = document.getElementById('root').clientWidth;
@@ -22,6 +28,20 @@ class Navigation extends Component {
     };
 
     componentDidMount() {
+        const user = JSON.parse(localStorage.getItem('user'))
+        if(user){
+            if(user.type_user_id && user.type_user_id===1){
+                this.setState({ items : navigation.items })
+            } else {
+                if(user.personnel)
+                    this.setState({ items : navigation_pers.items })
+                else if(user.contribuable){
+                    this.setState({ items : navigation_cont.items })
+                }
+            }
+        } else {
+            this.setState({ items : navigation.items })
+        }
         this.resize();
         window.addEventListener('resize', this.resize)
     }
@@ -109,7 +129,7 @@ class Navigation extends Component {
         let navContent = (
             <div className="navbar-wrapper">
                 <NavLogo collapseMenu={this.props.collapseMenu} windowWidth={this.props.windowWidth} onToggleNavigation={this.props.onToggleNavigation} />
-                <NavContent navigation={ window.location.href.indexOf("/_apps/") > -1 ? navigation_user.items : navigation.items} />
+                <NavContent navigation={this.state.items} />
             </div>
         );
         if (this.props.windowWidth < 992) {
@@ -117,7 +137,7 @@ class Navigation extends Component {
                 <OutsideClick>
                     <div className="navbar-wrapper">
                         <NavLogo collapseMenu={this.props.collapseMenu} windowWidth={this.props.windowWidth} onToggleNavigation={this.props.onToggleNavigation} />
-                        <NavContent navigation={ window.location.href.indexOf("/_apps/") > -1 ? navigation_user.items : navigation.items} />
+                        <NavContent navigation={ this.state.items } />
                     </div>
                 </OutsideClick>
             );

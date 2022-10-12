@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { createFilter } from 'react-select';
 import AsyncSelect from 'react-select/async';
+import { API_SERVER } from "config/constant";
 import { Row, Col, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 
 const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
 
+    const path = API_SERVER + 'api/';
     const [errors, setErrors] = useState({});
     const [service, setService] = useState(0);
     // let fonctions = JSON.parse(localStorage.getItem('fonctions') || '[]')
@@ -23,37 +25,38 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
     }
 
     const loadGrade = (input,cb) => {
-        // let res = await fetch('http://localhost:8000/api/grades')
-        // let json = await res.json()
-        // localStorage.setItem('grades', JSON.stringify(json))
-        let json = JSON.parse(localStorage.getItem('grades') || '[]')
-        cb(json.map( row => ({
-            label: row.nom_gr, 
-            value: row.id, 
-            target : { name: 'grade_id', value : row.id }
-        })))
+        fetch(`${path}grades`).then((response) => response.json())
+        .then((data) => {
+          const options = []
+          data.forEach((row) => {
+            options.push({label: `${row.nom_gr}`, value: row.id, target : { name: 'grade_id', value : row.id }})
+          })
+          cb(options);
+        })
     }
 
     const loadService = (input,cb) => {
-        // let res = await fetch('http://localhost:8000/api/services')
-        // let json = await res.json()
-        // localStorage.setItem('services', JSON.stringify(json))
-        let json = JSON.parse(localStorage.getItem('services') || '[]')
-        cb(json.map( row => ({label: row.nom_sc, value: parseInt(row.id)})))
+        fetch(`${path}services`).then((response) => response.json())
+        .then((data) => {
+          const options = []
+          data.forEach((row) => {
+            options.push({label: `${row.nom_sc}`, value: parseInt(row.id)})
+          })
+          cb(options);
+        })
     }
 
     const loadFonction = (input,cb) => {
-        // let res = await fetch('http://localhost:8000/api/fonctions')
-        // let json = await res.json()
-        // localStorage.setItem('fonctions', JSON.stringify(json))
-        let json = JSON.parse(localStorage.getItem('fonctions') || '[]')
-
-        json = json.filter((el) => el.service_id === service)
-        cb(json.map( row => ({
-            label: row.nom_fn, 
-            value: row.id, 
-            target : { name: 'fonction_id', value : row.id }
-        })))
+        fetch(`${path}fonctions`).then((response) => response.json())
+        .then((data) => {
+          const options = []
+          const newData = data.filter((el) => el.service_id === service)
+          console.log(newData);
+          newData.forEach((row) => {
+            options.push({label: `${row.nom_fn}`, value: row.id, target : { name: 'fonction_id', value : row.id }})
+          })
+          cb(options);
+        })
     }
 
     const filterOption = createFilter({ ignoreAccents: true })
@@ -170,7 +173,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                                         {/* <InputGroup.Prepend>
                                             <InputGroup.Text><i className="feather icon-hash"></i></InputGroup.Text>
                                         </InputGroup.Prepend> */}
-                                        <AsyncSelect filterOption={filterOption} loadOptions={loadService} defaultOptions placeholder="Selectionner la direction ou service"  styles={ customStyles('service_id') } onChange={handleService} />
+                                        <AsyncSelect cacheOptions filterOption={filterOption} loadOptions={loadService} defaultOptions placeholder="Selectionner la direction ou service"  styles={ customStyles('service_id') } onChange={handleService} />
                                     </InputGroup>
                                     <small className="text-danger text-right">{errors.service_id}</small>
                                 </Col>
@@ -179,7 +182,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                                 <Form.Label className="text-right" column sm={4}>Type de l'utilisateur</Form.Label>
                                 <Col>
                                     <InputGroup size="sm">
-                                        <AsyncSelect filterOption={filterOption} loadOptions={loadType} defaultOptions placeholder="Selectionner le type" name="type_user_id" styles={ customStyles('type_user_id') } onChange={handleChange} />
+                                        <AsyncSelect cacheOptions filterOption={filterOption} loadOptions={loadType} defaultOptions placeholder="Selectionner le type" name="type_user_id" styles={ customStyles('type_user_id') } onChange={handleChange} />
                                     </InputGroup>
                                     <small className="text-danger text-right">{errors.type_user_id}</small>
                                 </Col>
@@ -190,7 +193,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                                 <Form.Label className="text-right" column sm={3}>Grade</Form.Label>
                                 <Col>
                                     <InputGroup size="sm">
-                                        <AsyncSelect filterOption={filterOption} loadOptions={loadGrade} defaultOptions placeholder="Selectionner le grade" name="grade_id" styles={ customStyles('grade_id') } onChange={handleChange} />
+                                        <AsyncSelect cacheOptions filterOption={filterOption} loadOptions={loadGrade} defaultOptions placeholder="Selectionner le grade" name="grade_id" styles={ customStyles('grade_id') } onChange={handleChange} />
                                     </InputGroup>
                                     <small className="text-danger text-right">{errors.grade_id}</small>
                                 </Col>
@@ -199,7 +202,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                                 <Form.Label className="text-right" column sm={3}>Fonction</Form.Label>
                                 <Col>
                                     <InputGroup size="sm" >
-                                        <AsyncSelect filterOption={filterOption} loadOptions={loadFonction} defaultOptions placeholder="Selectionner la fonction" name="fonction_id" styles={ customStyles('fonction_id') } onChange={handleChange} />
+                                        <AsyncSelect cacheOptions filterOption={filterOption} loadOptions={loadFonction} placeholder="Selectionner la fonction" name="fonction_id" styles={ customStyles('fonction_id') } onChange={handleChange} />
                                     </InputGroup>
                                     <small className="text-danger text-right">{errors.fonction_id}</small>
                                 </Col>

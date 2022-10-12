@@ -149,6 +149,27 @@ strong {
     cursor: pointer !important;
 }
 
+.featured {
+    position: absolute;
+    margin: 20px;
+}
+
+.dropdown-toggle::after {
+    display: none !important; 
+}
+
+.img-container {
+    width: 70%;
+    height: 100%;
+    background-color: lightgray;
+    float: right;
+    background: no-repeat center center / cover;
+    -webkit-shape-outside: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+    shape-outside: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+    -webkit-clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
 .input-group .input-group-text i {
     font-size : 15px !important
 }
