@@ -85,7 +85,7 @@ const Application = () =>  {
                                                 </Card.Body>
                                                 <Card.Body>
                                                     <div className="row align-items-center justify-content-center card-active">
-                                                        <div className="col text-center"><a href={item.lien_app} target="_blank" rel="noopener noreferrer" className="label theme-bg text-white f-12 r-0">Aller au site</a></div>
+                                                        <div className="col text-center"><a href={item.lien_app} target="_blank" rel="noopener noreferrer" className="label theme-bg text-white f-12 r-0">Visiter</a></div>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

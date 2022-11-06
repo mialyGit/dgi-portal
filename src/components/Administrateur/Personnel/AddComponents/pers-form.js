@@ -1,6 +1,7 @@
-import { basename } from 'config/constant';
 import React, { useRef, useState } from 'react';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, ProgressBar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import defaultImg from 'assets/images/no-import.png'
 
 const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     const fileRef = useRef();
@@ -21,7 +22,11 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     }
 
     const defaultSrcImg = (e) => {
-        e.target.src = basename + "/no-import.png"
+        setPreview(defaultImg)
+        setUploadMessage({
+            color : "text-muted",
+            text : "Veuillez importer une icône ici"
+        })
     }
 
     const validateForm = () => {
@@ -192,7 +197,11 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
                 </Card.Body>
                 <Card.Footer>
                     <div style={{display:'flex', justifyContent:'right'}}>
-                        <a href="/personnels" className="btn btn-secondary btn-sm"><i className="feather icon-x-circle"></i>Annuler</a>{' '}
+                        <Link to="/employes">
+                            <Button variant="secondary" size="sm">
+                                <i className="feather icon-x-circle"></i>Annuler
+                            </Button>
+                        </Link>
                         <Button className="no-margin-btn" type="submit" variant="primary" size="sm">Confirmer <i className="feather icon-chevrons-right"></i></Button>
                     </div>
                 </Card.Footer>

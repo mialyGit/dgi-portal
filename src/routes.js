@@ -21,10 +21,16 @@ const AddPersonnel = React.lazy(() => import('./components/Administrateur/Person
 const DetailsPersonnel = React.lazy(() => import('./components/Administrateur/Personnel/details'));
 
 const Demande = React.lazy(() => import('./components/Administrateur/Demande'));
+const Historique = React.lazy(() => import('./components/Administrateur/Historique'));
 
 const Contribuable = React.lazy(() => import('./components/Personnel/Contribuable'));
 const AddContribuable = React.lazy(() => import('./components/Personnel/Contribuable/add'));
 const DetailsContribuable = React.lazy(() => import('./components/Personnel/Contribuable/details'));
+
+const Privilege = React.lazy(() => import('./components/Administrateur/Privilege'));
+const Fonction = React.lazy(() => import('./components/Administrateur/Fonction'));
+const Service = React.lazy(() => import('./components/Administrateur/Service'));
+const Grade = React.lazy(() => import('./components/Administrateur/Grade'));
 
 const Profile = React.lazy(() => import('./components/Profile'));
 const SignOut = React.lazy(() => import('./components/Authentication/SignOut'));
@@ -41,11 +47,12 @@ const routes = [
     { path: '/users/details', name: 'Information utilisateur', component: DetailsUser },*/
 
     { path: '/demandes', exact: true, name: 'Demande', component: Demande },
-    { path: '/personnels', exact: true, name: 'Personnel', component: Personnel },
-    { path: '/personnels/apps', name: 'Application', component: AppPersonnel },
-    { path: '/personnels/new', name: 'Ajouter utilisateur', component: AddPersonnel },
-    { path: '/personnels/details', name: 'Information utilisateur', component: DetailsPersonnel },
-    { path: '/personnels/privileges', exact: true, name: 'Privilège', component: PrivilegePersonnel },
+    { path: '/historiques', exact: true, name: 'Historique', component: Historique },
+    { path: '/employes', exact: true, name: 'Personnel', component: Personnel },
+    { path: '/employes/apps', name: 'Application', component: AppPersonnel },
+    { path: '/employes/new', name: 'Ajouter utilisateur', component: AddPersonnel },
+    { path: '/employes/details', name: 'Information utilisateur', component: DetailsPersonnel },
+    { path: '/employes/privileges', exact: true, name: 'Privilège', component: PrivilegePersonnel },
 
     { path: '/contribuables', exact: true, name: 'Contribuable', component: Contribuable },
     { path: '/contribuables/apps', name: 'Application', component: AppContribuable },
@@ -53,6 +60,12 @@ const routes = [
     { path: '/contribuables/details', name: 'Information contribuable', component: DetailsContribuable },
     { path: '/contribuables/privileges', exact: true, name: 'Privilège', component: PrivilegeContribuable },
     
+
+    { path: '/privileges', exact: true, name: 'Privilege', component: Privilege },
+    { path: '/services', exact: true, name: 'Service', component: Service },
+    { path: '/grades', exact: true, name: 'Grade', component: Grade },
+    { path: '/fonctions', exact: true, name: 'Fonction', component: Fonction },
+
     { path: '/profile', exact: true, name: 'Profile', component: Profile },
     { path: '/logout', exact: true, name: 'Déconnexion', component: SignOut },
 ];

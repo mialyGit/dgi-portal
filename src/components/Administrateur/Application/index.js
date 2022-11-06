@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Row, Col, Card, Spinner, Button} from 'react-bootstrap';
+import {Row, Col, Card, Spinner, Button, InputGroup, FormControl} from 'react-bootstrap';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Aux from "hoc/_Aux";
@@ -16,6 +16,17 @@ const Application = () =>  {
     
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchValue, setSearchValue] = useState('');
+
+    function search (searchTerm) {
+        setSearchValue(searchTerm);
+        const data = JSON.parse(localStorage.getItem("apps") || '[]')
+        const filtered = data.filter(
+            item =>
+                JSON.stringify(item).indexOf(searchTerm) > -1
+        );
+        setRows(filtered);
+    }
 
     const defaultSrcImg = (e) => {
         e.target.src = basename + "/default-logo.png"
@@ -63,11 +74,23 @@ const Application = () =>  {
                     {/* --------------------------------------------- APPLICATION PAR DEFAUT -----------------------------------------------------------------------*/}
                     <Card>
                         <Card.Header>
-                            <Card.Title as="h5"> Applications par défaut </Card.Title>
+                            <Card.Title as="h5"> Liste des applications </Card.Title>
                             <div className="card-header-right">
-                                <Link to="/apps/new">
-                                    <Button variant="secondary" size="sm" ><i className="feather icon-file-plus"></i>AJOUTER</Button>
-                                </Link>
+                                <Row>
+                                    <Col className="mt-1">
+                                        <Link to="/apps/new">
+                                            <Button variant="secondary" size="sm">Ajouter une application</Button>
+                                        </Link>
+                                    </Col>
+                                    <Col  className="mt-1">
+                                        <InputGroup size="sm">
+                                            <FormControl id="search_table" name="search_table" placeholder="Rechercher..." value={searchValue} onChange={e=> search(e.target.value)} />
+                                            <InputGroup.Append>
+                                                <InputGroup.Text><i className="feather icon-search"></i></InputGroup.Text>
+                                            </InputGroup.Append>
+                                        </InputGroup>
+                                    </Col>
+                                </Row>
                             </div>
                         </Card.Header>
                         <Card.Body>

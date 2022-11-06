@@ -1,11 +1,12 @@
 import React from 'react';
-
+import moment from 'moment';
 import Aux from "../../../../../../../../../hoc/_Aux";
 // const images = require.context('../../../../../../../../../assets/images/user', true);
 
 const messages = (props) => {
     let image = '';
-    
+    moment.locale('fr');
+
     let msgClass = ['media-body'];
     if(props.message.sender_id === props.user.id) {
         msgClass = [...msgClass, 'chat-menu-content'];
@@ -26,7 +27,7 @@ const messages = (props) => {
                     <div className="">
                         <p className="chat-cont">{props.message.content}</p>
                     </div>
-                    <p className="chat-time">{props.message.created_at}</p>
+                    <p className="chat-time">{moment(props.message.created_at).fromNow()}</p>
                 </div>
             </div>
         </Aux>

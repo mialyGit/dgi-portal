@@ -9,6 +9,10 @@ class ContApi {
     return axios.get(`api/users/demandes`);
   };
 
+  static getAllHistoriques = () => {
+    return axios.get(`api/users/historiques`);
+  };
+
   static add = (data) => {
     return axios.post(`${base}`, data);
   };

@@ -22,17 +22,17 @@ export default {
                 },*/
                 {
                     id: 'pers',
-                    title: 'Personnel',
+                    title: 'Employé',
                     type: 'item',
                     icon: 'feather icon-users',
-                    url: '/personnels'
+                    url: '/employes'
                 },
                 {
                     id: 'privilege',
                     title: 'Privilège',
                     type: 'item',
                     icon: 'feather icon-shield',
-                    url: '/personnels/privileges'
+                    url: '/employes/privileges'
                 },
                 {
                     id: 'demande',
@@ -41,6 +41,45 @@ export default {
                     icon: 'feather icon-unlock',
                     url: '/demandes'
                 },
+                {
+                    id: 'historique',
+                    title: 'Historique',
+                    type: 'item',
+                    icon: 'feather icon-clock',
+                    url: '/historiques'
+                },
+                {
+                    id: 'basic',
+                    title: 'Autres',
+                    type: 'collapse',
+                    icon: 'feather icon-box',
+                    children: [
+                        {
+                            id: 'privilege',
+                            title: 'Privilège',
+                            type: 'item',
+                            url: '/privileges'
+                        },
+                        {
+                            id: 'fonction',
+                            title: 'Fonction',
+                            type: 'item',
+                            url: '/fonctions'
+                        },
+                        {
+                            id: 'grade',
+                            title: 'Grade',
+                            type: 'item',
+                            url: '/grades'
+                        },
+                        {
+                            id: 'service',
+                            title: 'Service',
+                            type: 'item',
+                            url: '/services'
+                        }
+                    ]
+                }
             ]
         },
         {

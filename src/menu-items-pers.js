@@ -10,7 +10,7 @@ export default {
                     id: 'dashboard',
                     title: 'Application',
                     type: 'item',
-                    url: '/personnels/apps',
+                    url: '/employes/apps',
                     icon: 'feather icon-box',
                 },
                 {

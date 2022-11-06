@@ -3,12 +3,22 @@ import {connect} from 'react-redux';
 //import {Dropdown} from 'react-bootstrap';
 import windowSize from 'react-window-size';
 
-import NavSearch from './NavSearch';
+//import NavSearch from './NavSearch';
 import Aux from "../../../../../hoc/_Aux";
 import DEMO from "../../../../../store/constant";
 import * as actionTypes from "../../../../../store/actions";
 
 class NavLeft extends Component {
+
+    refresh = () => {
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            // eslint-disable-next-line eqeqeq
+            if(key != 'user' && key != 'randid'){
+                localStorage.removeItem(key)
+            }
+          }
+    }
 
     render() {
         let iconFullScreen = ['feather'];
@@ -42,7 +52,7 @@ class NavLeft extends Component {
                             </ul>
                         </Dropdown>
                     </li> */}
-                    <li className="nav-item"><NavSearch/></li>
+                    <li className="nav-item"><span style={{"cursor":"pointer"}} onClick={this.refresh}><i className="feather icon-refresh-cw"/></span></li>
                 </ul>
             </Aux>
         );

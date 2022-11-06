@@ -18,7 +18,7 @@ const AddUser = () => {
         id : "",
         nom : faker.name.firstName(),
         prenom : faker.name.lastName(),
-        email : faker.internet.email(),
+        email : faker.internet.email().toLowerCase(),
         telephone : faker.phone.number('+261 34 ## ### ##'),
         photo : "",
         adresse : faker.address.country(),
@@ -33,7 +33,7 @@ const AddUser = () => {
         type_contr : "0",
         localisation : JSON.stringify({ x : 1, y : 1})
     }
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
     const [loading, setLoading] = useState(false);
 
     const nextStep = () => {

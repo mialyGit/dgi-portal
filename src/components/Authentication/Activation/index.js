@@ -40,7 +40,7 @@ const Activation = () => {
             nif
         }).then((res)=>{
             console.log(res);
-            setSuccess("Demande envoyé avec succès")
+            setSuccess(res.data.message)
         }).catch((err)=>{
             if (err.response.data) {
                 setError(err.response.data.message);

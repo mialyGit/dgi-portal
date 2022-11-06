@@ -16,13 +16,35 @@ const CinForm = ({cin, handleInputChange, nextStep, prevStep}) => {
         }
     }
 
+    const getAge = (now, DOB1, DOB2) => {
+        var today = now ? new Date() : new Date(DOB1);
+        var birthDate = new Date(DOB2);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }    
+        return age;
+    }
+
+    const exist_deja = (str) => {
+        const data = JSON.parse(localStorage.getItem("personnels") || '[]')
+        return data.some(function(el) {
+            // eslint-disable-next-line eqeqeq
+            return JSON.parse(el.cin).numero == str
+        }); 
+    }
+
     const validateForm = () => {
         const {numero, date_delivrance, date_naissance, lieu_naissance } = cin;
         const newErrors = {}
-        if(!numero || numero.trim() === '') newErrors.numero = "Veuillez entrer le numéro cin"
-        if(numero.length !== 12 ) newErrors.numero = "Le numéro CIN doit comporter 12 caractères"
+        if(!numero || numero.trim() === '') newErrors.numero = "Veuillez entrer le numéro CIN"
+        else if(numero.length !== 12 ) newErrors.numero = "Le numéro CIN doit comporter 12 caractères"
+        else if(exist_deja(numero)) newErrors.numero = "Numéro CIN existe déjà"
         if(!date_delivrance || date_delivrance.trim() === '') newErrors.date_delivrance = "Veuillez entrer la date de delivrance du cin"
+        else if(getAge(false,date_delivrance,date_naissance) < 18) newErrors.date_delivrance = "La date de delivrance doit supérieur de 18 ans à la date de naissance"
         if(!date_naissance || date_naissance.trim() === '') newErrors.date_naissance = "Veuillez entrer la date de naissance"
+        else if(getAge(true,"",date_naissance) < 18) newErrors.date_naissance = "Un employé doit être une personne majeur"
         if(!lieu_naissance || lieu_naissance.trim() === '') newErrors.lieu_naissance = "Veuillez entrer le lieu de naissance"
         return newErrors
     }

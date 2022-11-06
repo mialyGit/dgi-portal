@@ -18,7 +18,7 @@ const AddUser = () => {
         id : "",
         nom : faker.name.firstName(),
         prenom : faker.name.lastName(),
-        email : faker.internet.email(),
+        email : faker.internet.email().toLowerCase(),
         telephone : faker.phone.number('+261 34 ## ### ##'),
         photo : "",
         adresse : faker.address.country(),
@@ -78,7 +78,7 @@ const AddUser = () => {
             console.log(res);
             localStorage.removeItem("personnels")
             let newValue = res.data.user
-            return history.push({pathname: '/personnels', state : {newValue}});
+            return history.push({pathname: '/employes', state : {newValue}});
         }).catch((err)=>{
             errorModal(err)
             setLoading(false)

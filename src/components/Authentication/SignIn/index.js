@@ -61,7 +61,7 @@ const SignIn = () => {
             let user = { ...res.data.user };
             let redirect = "/"
             if(user.type_user_id) redirect = "/apps"
-            else if(user.personnel) redirect = "/personnels/apps"
+            else if(user.personnel) redirect = "/employes/apps"
             else if(user.contribuable) redirect = "/contribuables/apps"
             user.token = res.data.token;
             user = JSON.stringify(user);
@@ -118,7 +118,7 @@ const SignIn = () => {
                                                     type = {showPassword ? "text" : "password"}
                                                     className="form-control" 
                                                     name="password"
-                                                    placeholder="password"
+                                                    placeholder="Mot de passe"
                                                     onChange={(event) => {
                                                         setPassword(event.target.value);
                                                         setError(undefined);
@@ -143,7 +143,7 @@ const SignIn = () => {
                                                 <button type="submit" className="btn btn-primary shadow-2 mb-4">Se connecter</button>
                                             )}
 
-                                            <p className="mb-2 text-muted">Mot de passe oublié ? <NavLink to="/reset-password">Réinitialiser</NavLink></p>
+                                            <p className="mb-2 text-muted"></p>
                                             <p className="mb-0 text-muted">Votre compte est-il activé ? <NavLink to="/activation">Demander une activation</NavLink></p>
                                         </div>
                                     </div>

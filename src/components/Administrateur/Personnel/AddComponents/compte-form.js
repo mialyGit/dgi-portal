@@ -24,6 +24,7 @@ const CompteForm = ({user, handleInputChange, prevStep, save , loading}) => {
         if(!email || email.trim() === '' ) newErrors.email = "Veuillez entrer l'email"
         if(!isValidEmail(email)) newErrors.email = "Veuillez entrer un email valide"
         if(!password || password.trim() === '') newErrors.password = "Veuillez entrer le mot de passe"
+        else if(password.length < 8) newErrors.password = "Le mot de passe doit comporter au moins 8 caractères"
         if(!password_confirmation || password_confirmation.trim() === '') newErrors.password_confirmation = "Veuillez confirmer le mot de passe"
         if(password.trim() !== password_confirmation.trim()) newErrors.password_confirmation = "Confirmation de mot de passe incorrect"
         return newErrors

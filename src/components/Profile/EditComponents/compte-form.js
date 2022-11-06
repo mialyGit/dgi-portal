@@ -121,12 +121,12 @@ const CompteForm = ({ user , handleChange , save, cancel, loading }) => {
                             <i className="feather icon-x-circle"></i>Annuler
                         </Button>{' '}
                         {(loading && (
-                            <Button variant="success" size="sm" disabled>
+                            <Button variant="secondary" size="sm" disabled>
                                 <Spinner as="span" className="mr-2" size="sm" animation="border" role="status" aria-hidden="true" />
                                 Veuillez patientez ...
                             </Button>
                         )) || (
-                            <Button type="submit" variant="success" size="sm">
+                            <Button type="submit" variant="secondary" size="sm">
                                 <i className="feather icon-check-square"></i>Sauvegarder
                             </Button>
                         )}

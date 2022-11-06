@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createFilter } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+//import MapContainer from './map-form';
 
 const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
 
@@ -42,10 +43,20 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
         }
     }
 
+    const exist_deja = (str) => {
+        const data = JSON.parse(localStorage.getItem("contribuables") || '[]')
+        return data.some(function(el) {
+            // eslint-disable-next-line eqeqeq
+            return el.contribuable.nif == str
+        }); 
+    }
+
     const validateForm = () => {
         const {nif, raison_sociale, activite } = user;
         const newErrors = {}
         if(!nif || nif.trim() === '') newErrors.nif = "Veuillez entrer le NIF"
+        else if(nif.length < 6 ) newErrors.nif = "Le NIF doit comporter au moins 6 caractères"
+        else if(exist_deja(nif)) newErrors.nif = "NIF existe déjà"
         if(!raison_sociale || raison_sociale.trim() === '') newErrors.raison_sociale = "Veuillez entrer le raison sociale"
         if(!activite || activite.trim() === '') newErrors.activite = "Veuillez entrer l'activité"
         return newErrors
@@ -106,11 +117,10 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                         </div>
                     </div>
                     <hr/>
-                    { JSON.stringify(user) }
                     <Row className="pt-4">
                         <Col md={6}>
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label className="text-right" column sm={4}>Numéro d'Identification Fiscale</Form.Label>
+                                <Form.Label className="text-right" column sm={4}> NIF </Form.Label>
                                 <Col>
                                     <InputGroup size="sm">
                                         <InputGroup.Prepend>
@@ -166,8 +176,12 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                                         <input name="type_contr" type="radio" id="type_contr_1" className="form-check-input" value={1} style={{"cursor":"pointer"}} checked={user.type_contr === "1"}  onChange={handleChange}/>
                                         <label title="" htmlFor="type_contr_0" className="form-check-label" style={{"cursor":"pointer"}}>Personne morale</label>
                                     </div>
-                                </Col>
+                                </Col> 
                             </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
                         </Col>
                     </Row>
                 </Card.Body>
@@ -178,6 +192,25 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                     </div>
                 </Card.Footer>
             </Card>
+            {/* <Card>
+                <Card.Header>
+                    <Card.Title as="h5">Localisation</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                    <InputGroup className="mb-3">
+                        <Form.Control type='text' placeholder='Rechercher' />
+                        <InputGroup.Append>
+                            <Button type="submit">Rechercher</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                    <div style={{height: '240px', width: '100%'}}>
+                        <MapContainer />
+                    </div>
+                </Card.Body>
+                <Card.Footer>
+                   
+                </Card.Footer>
+            </Card> */}
         </Form>
     );
 }

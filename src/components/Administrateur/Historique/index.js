@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import {Row, Col, Card, InputGroup, FormControl } from 'react-bootstrap';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import PersApi from "utils/pers";
+
 import DataTable from 'App/components/Datatable';
 import moment from 'moment';
-import fr  from 'moment/locale/fr';
-
+import ContApi from "utils/cont";
 import { API_SERVER } from "config/constant";
 import { errorModal } from "../../Common/SweetModal"
 import Aux from "hoc/_Aux";
 import Avatar2 from "assets/images/user/avatar-2.jpg"
 
-const Demande = () => {
+const Historique = () => {
 
     const path = API_SERVER + 'storage/';
-    moment.updateLocale('fr', fr);
+    moment.locale('fr');
     const [rows, setRows] = useState([]);
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const [searchValue, setSearchValue] = useState('');
-    const [loadingStatus, setLoadingStatus] = useState(-1);
     const [loading, setLoading] = useState(true)
 
     function search (searchTerm) {
         setSearchValue(searchTerm);
-        const data = JSON.parse(localStorage.getItem("demandes") || '[]')
+        const data = JSON.parse(localStorage.getItem("hists") || '[]')
         const filtered = data.filter(
             item =>
                 JSON.stringify(item).indexOf(searchTerm) > -1
         );
         if(searchTerm) setResetPaginationToggle(true)
         setRows(filtered);
-    }
+      }
 
     const columns = [
         {
@@ -53,64 +51,34 @@ const Demande = () => {
             sortable: true
         },
         {
-            name: 'Date de création',
+            name: 'Date',
             selector: row => moment(row.created_at).format('L'),
             style: {
                 color: 'rgba(0,0,0,.54)',
             },
         },
         {
-            name: 'Status',
-            cell: row => <><td>{(row.user.status !== 0 && (
-                <h6 className="m-0 text-c-green"><i className="fa fa-circle text-c-green f-10 m-r-15"/> Activé </h6>
-            ) ) || (
-                <h6 className="m-0 text-c-red"><i className="fa fa-circle text-c-red f-10 m-r-15"/> Desactivé </h6>
-            )}</td></>
-        },
-        {
-            name: 'Options',
-            cell: row => <>{(loadingStatus === row.id && (
-                <button className="theme-bg-btn blue" disabled> En cours ... </button>
-            )) || (
-                (row.user.status === 0 && (<button className="theme-bg-btn blue" onClick={() => validate(row.user.status === 0,row.user.id)}>Valider</button>))
-                ||
-                (<button className="theme-bg-btn red" onClick={() => validate(row.user.status === 0,row.user.id)}>Désactiver</button>)
-            )}</>
+            name: 'Action',
+            cell: row => <h6 className="m-0 text-c-green"><i className="fa fa-circle text-c-green f-10 m-r-15"/> {row.action} </h6>
         },
     ];
-    
+
     const defaultSrcImg = (e) => {
         e.target.src = Avatar2
     }
 
-    const validate = (validate,id) => {
-        setLoadingStatus(id);
-        console.log(validate);
-        return PersApi.validateStatus(validate, id)
-        .then((res)=>{
-            /*const data = JSON.parse(localStorage.getItem("demandes"))
-            if(data && data.user){
-                data.user.status = 1
-                localStorage.setItem("demandes", JSON.stringify(data))
-            }*/
-            localStorage.removeItem("demandes")
-        }).catch((err)=>{
-            errorModal(err)
-        }).finally(()=> {setLoadingStatus(-1);getAll();})
-    }
-
     const getAll = () => {
-        const data = JSON.parse(localStorage.getItem("demandes"))
+        const data = JSON.parse(localStorage.getItem("hists"))
         if(data){
-            setLoading(false);
-            return setRows(data)
+                setLoading(false);
+                return setRows(data);
         }
-        PersApi.getAllDemandes().then((res) => {
+        ContApi.getAllHistoriques().then((res) => {
             const { data } = res;
             setRows(data);
-            localStorage.setItem("demandes", JSON.stringify(data))
+            localStorage.setItem("hists", JSON.stringify(data))
         }).catch((err)=>{
-            localStorage.removeItem("demandes")
+            localStorage.removeItem("hists")
             errorModal(err)
         }).finally(() => {
             setLoading(false);
@@ -129,9 +97,9 @@ const Demande = () => {
                 <Col>
                     <Card className='Recent-Users'>
                         <Card.Header>
-                            <Card.Title as='h5'>Liste des demandes d'activation d'un compte</Card.Title>
+                            <Card.Title as='h5'>Activité des utilisateurs</Card.Title>
                             <div className="card-header-right">
-                                <InputGroup size="sm">
+                                <InputGroup size="sm" className="mt-1">
                                     <FormControl id="search_table" name="search_table" placeholder="Rechercher..." value={searchValue} onChange={e=> search(e.target.value)} />
                                     <InputGroup.Append>
                                         <InputGroup.Text><i className="feather icon-search"></i></InputGroup.Text>
@@ -140,7 +108,7 @@ const Demande = () => {
                             </div>
                         </Card.Header>
                         <Card.Body className='px-0 py-2'>
-                        <DataTable
+                            <DataTable
                                 columns={columns}
                                 data={rows}
                                 pending={loading}
@@ -151,9 +119,8 @@ const Demande = () => {
                                     <tr>
                                         <td>#</td>
                                         <td>Utilisateur</td>
-                                        <td>Date d'envoi</td>
-                                        <td>Status</td>
-                                        <td>Options</td>
+                                        <td>Date</td>
+                                        <td>Action</td>
                                     </tr>
                                     {loading ? (
                                         <tr className="unread text-center">
@@ -171,24 +138,13 @@ const Demande = () => {
                                                 <td>
                                                     <h6 className="text-muted">{moment(item.created_at).format('L')}</h6>
                                                 </td>
-                                                <td>{(item.user.status !== 0 && (
-                                                    <h6 className="m-0 text-c-green"><i className="fa fa-circle text-c-green f-10 m-r-15"/> Activé </h6>
-                                                ) ) || (
-                                                    <h6 className="m-0 text-c-red"><i className="fa fa-circle text-c-red f-10 m-r-15"/> Desactivé </h6>
-                                                )}</td>
                                                 <td>
-                                                {(loadingStatus === item.id && (
-                                                    <button className="theme-bg-btn blue" disabled> En cours ... </button>
-                                                )) || (
-                                                    (item.user.status === 0 && (<button className="theme-bg-btn blue" onClick={() => validate(item.user.status === 0,item.user.id)}>Valider</button>))
-                                                    ||
-                                                    (<button className="theme-bg-btn red" onClick={() => validate(item.user.status === 0,item.user.id)}>Désactiver</button>)
-                                                )}
+                                                    <h6 className="m-0 text-c-green"><i className="fa fa-circle text-c-green f-10 m-r-15"/> {item.action} </h6>
                                                 </td>
                                             </tr>
                                         )) : (
                                             <tr className="unread text-center">
-                                                <td colSpan={5}>Aucune résultat</td> 
+                                                <td colSpan={4}>Aucune résultat</td> 
                                             </tr>
                                         )}
                                 </tbody>
@@ -201,4 +157,4 @@ const Demande = () => {
     );
 }
 
-export default Demande;
+export default Historique;

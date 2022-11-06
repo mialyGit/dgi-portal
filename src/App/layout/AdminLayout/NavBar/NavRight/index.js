@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Dropdown} from 'react-bootstrap';
+//import {Dropdown} from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
 import ChatList from './ChatList';
@@ -8,12 +8,13 @@ import DEMO from "../../../../../store/constant";
 import { useAuth } from "../../../../../auth-context/auth.context";
 import { API_SERVER } from "../../../../../config/constant";
 
-import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
+//import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
 import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
-import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
+//import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
 
 const NavRight = (props) => {
     const [listOpen, setListOpen] = useState(false)
+    const [um, setUm] = useState(false)
     const path = API_SERVER + 'storage/';
     const { userSession } = useAuth()
 
@@ -24,7 +25,7 @@ const NavRight = (props) => {
     return (
         <Aux>
             <ul className="navbar-nav ml-auto">
-                <li>
+                {/* <li>
                     <Dropdown alignRight={!props.rtlLayout}>
                         <Dropdown.Toggle variant={'link'} id="dropdown-basic">
                             <i className="icon feather icon-bell"/>
@@ -34,9 +35,9 @@ const NavRight = (props) => {
                             <div className="noti-head">
                                 <h6 className="d-inline-block m-b-0">Notifications</h6>
                                 <div className="float-right">
-                                    <a href={DEMO.BLANK_LINK} className="m-r-10">Marquer comme lu</a>
+                                    <a href={DEMO.BLANK_LINK} className="m-r-10">Marquer comme lu</a> */}
                                     {/* <a href={DEMO.BLANK_LINK}>Effacer tout</a> */}
-                                </div>
+                                {/* </div>
                             </div>
                             <ul className="noti-body">
                                 <li className="n-title">
@@ -71,7 +72,7 @@ const NavRight = (props) => {
                                         <div className="media-body">
                                             <p><strong>Sara Soudein</strong><span className="n-time text-muted"><i
                                                 className="icon feather icon-clock m-r-10"/>30 min</span></p>
-                                            <p>Supprimer un personnel</p>
+                                            <p>Supprimer un employé</p>
                                         </div>
                                     </div>
                                 </li>
@@ -81,10 +82,10 @@ const NavRight = (props) => {
                             </div>
                         </Dropdown.Menu>
                     </Dropdown>
-                </li>
+                </li> */}
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <a href={DEMO.BLANK_LINK} className="displayChatbox" onClick={() => setListOpen(true)}><i className="icon feather icon-mail"/></a>
-                    <span className="badge badge-danger badge-sm navbar-badge">1</span>
+                    <span className="badge badge-danger badge-sm navbar-badge">{um ? um : ""}</span>
                 </li>
                 <li className={props.rtlLayout ? 'm-r-15' : 'm-l-15'}>
                     <Link to="/profile">
@@ -123,7 +124,7 @@ const NavRight = (props) => {
                     </Dropdown>
                 </li> */}
             </ul>
-            <ChatList userConnected={userSession} listOpen={listOpen} closed={() => setListOpen(false)} />
+            <ChatList userConnected={userSession} um={um} setUm={setUm} listOpen={listOpen} closed={() => setListOpen(false)} />
         </Aux>
     );
 }

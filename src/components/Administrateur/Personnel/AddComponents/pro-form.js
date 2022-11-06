@@ -85,14 +85,24 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
         }
     }
 
+    const exist_deja = (str) => {
+        const data = JSON.parse(localStorage.getItem("personnels") || '[]')
+        return data.some(function(el) {
+            // eslint-disable-next-line eqeqeq
+            return el.personnel.num_matricule == str
+        }); 
+    }
+
     const validateForm = () => {
         const {num_matricule, fonction_id, grade_id, type_user_id } = user;
         const service_id = service
         const newErrors = {}
         if(!num_matricule || num_matricule.trim() === '') newErrors.num_matricule = "Veuillez entrer le numéro matricule"
-        if(!service_id || service_id === 0) newErrors.service_id = "Veuillez entrer le service du personnel"
-        if(!fonction_id || fonction_id === 0) newErrors.fonction_id = "Veuillez entrer la fonction du personnel"
-        if(!grade_id || grade_id === 0) newErrors.grade_id = "Veuillez entrer le grade du personnel"
+        else if(num_matricule.length < 6 ) newErrors.num_matricule = "Le numéro matricule doit comporter au moins 6 caractères"
+        else if(exist_deja(num_matricule)) newErrors.num_matricule = "Numéro matricule existe déjà"
+        if(!service_id || service_id === 0) newErrors.service_id = "Veuillez entrer le service de l'employé"
+        if(!fonction_id || fonction_id === 0) newErrors.fonction_id = "Veuillez entrer la fonction de l'employé"
+        if(!grade_id || grade_id === 0) newErrors.grade_id = "Veuillez entrer le grade de l'employé"
         if(type_user_id === -1) newErrors.type_user_id = "Veuillez entrer le type de l'utilisateur"
         return newErrors
     }

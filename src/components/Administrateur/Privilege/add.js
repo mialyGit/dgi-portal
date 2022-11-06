@@ -178,7 +178,7 @@ const AddPrivilege = () => {
                                 </Button>
                             )) || (
                                 <div className="pull-right mt-2">
-                                    <Link to="/users">
+                                    <Link to="/employes">
                                         <Button variant="secondary" size="sm">
                                             <i className="feather icon-x-circle"></i>Annuler
                                         </Button>

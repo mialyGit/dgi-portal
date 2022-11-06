@@ -1,5 +1,6 @@
 import { basename } from 'config/constant';
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, ProgressBar } from 'react-bootstrap';
 
 const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
@@ -192,7 +193,12 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
                 </Card.Body>
                 <Card.Footer>
                     <div style={{display:'flex', justifyContent:'right'}}>
-                        <a href="/contribuables" className="btn btn-secondary btn-sm"><i className="feather icon-x-circle"></i>Annuler</a>{' '}
+                        <Link to="/contribuables">
+                            <Button variant="secondary" size="sm">
+                                <i className="feather icon-x-circle"></i>Annuler
+                            </Button>
+                        </Link>
+                        {' '}
                         <Button className="no-margin-btn" type="submit" variant="primary" size="sm">Confirmer <i className="feather icon-chevrons-right"></i></Button>
                     </div>
                 </Card.Footer>
