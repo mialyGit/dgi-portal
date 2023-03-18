@@ -12,9 +12,15 @@ const AddApp = React.lazy(() => import('./components/Administrateur/Application/
 const EditApp = React.lazy(() => import('./components/Administrateur/Application/edit'));
 const AppPersonnel = React.lazy(() => import('./components/Personnel/Application'));
 const AppContribuable = React.lazy(() => import('./components/Contribuable/Application'));
+const AppDetailsPersonnel = React.lazy(() => import('./components/Personnel/Application/details'));
+const AppDetailsContribuable = React.lazy(() => import('./components/Contribuable/Application/details'));
+
+const MesPrivilege = React.lazy(() => import('./components/Contribuable/Privilege'));
 
 const PrivilegePersonnel = React.lazy(() => import('./components/Administrateur/Privilege/add'));
 const PrivilegeContribuable = React.lazy(() => import('./components/Personnel/Privilege/add'));
+const PrivilegeEditPersonnel = React.lazy(() => import('./components/Administrateur/Privilege/edit'));
+const PrivilegeEditContribuable = React.lazy(() => import('./components/Personnel/Privilege/edit'));
 
 const Personnel = React.lazy(() => import('./components/Administrateur/Personnel'));
 const AddPersonnel = React.lazy(() => import('./components/Administrateur/Personnel/add'));
@@ -49,16 +55,21 @@ const routes = [
     { path: '/demandes', exact: true, name: 'Demande', component: Demande },
     { path: '/historiques', exact: true, name: 'Historique', component: Historique },
     { path: '/employes', exact: true, name: 'Personnel', component: Personnel },
-    { path: '/employes/apps', name: 'Application', component: AppPersonnel },
+    { path: '/employes/apps', exact: true, name: 'Application', component: AppPersonnel },
+    { path: '/employes/apps/details', name: 'Application details', component: AppDetailsPersonnel },
     { path: '/employes/new', name: 'Ajouter utilisateur', component: AddPersonnel },
     { path: '/employes/details', name: 'Information utilisateur', component: DetailsPersonnel },
     { path: '/employes/privileges', exact: true, name: 'Privilège', component: PrivilegePersonnel },
+    { path: '/employes/privileges/edit', name: 'Modifier privilège', component: PrivilegeEditPersonnel },
 
     { path: '/contribuables', exact: true, name: 'Contribuable', component: Contribuable },
-    { path: '/contribuables/apps', name: 'Application', component: AppContribuable },
+    { path: '/contribuables/apps', exact: true, name: 'Application', component: AppContribuable },
+    { path: '/contribuables/apps/details', name: 'Application details', component: AppDetailsContribuable },
+    { path: '/contribuables/mesprivileges', name: 'Mes privileges', component: MesPrivilege },
     { path: '/contribuables/new', name: 'Ajouter un contribuable', component: AddContribuable },
     { path: '/contribuables/details', name: 'Information contribuable', component: DetailsContribuable },
     { path: '/contribuables/privileges', exact: true, name: 'Privilège', component: PrivilegeContribuable },
+    { path: '/contribuables/privileges/edit', name: 'Modifier privilège', component: PrivilegeEditContribuable },
     
 
     { path: '/privileges', exact: true, name: 'Privilege', component: Privilege },

@@ -3,7 +3,8 @@ import { Link, useHistory } from 'react-router-dom'
 import {Form, InputGroup, FormControl, Row, Col, Card, Button, Spinner, ProgressBar} from 'react-bootstrap';
 import Aux from "hoc/_Aux";
 import AppApi from 'utils/app';
-import { basename } from 'config/constant';
+import no_import from 'assets/images/no-import.png';
+//import { basename } from 'config/constant';
 
 const AddApp = () => {
     const fileRef = useRef();
@@ -13,8 +14,8 @@ const AddApp = () => {
         nom_app: '',
         abrev_app: '',
         desc_app: '',
-        lien_app: 'https://',
-        type_app: 0,
+        lien_app: 'http://',
+        type_app: 1,
         file: ''
     }
     const [app, setApp] = useState(initialStateApp)
@@ -22,7 +23,7 @@ const AddApp = () => {
     const [errors, setErrors] = useState({});
     const [error, setError] = useState(undefined);
     const [progress, setProgress] = useState(0)
-    const [preview, setPreview] = useState(basename + "/no-import.png");
+    const [preview, setPreview] = useState(no_import);
     const [uploadMessage, setUploadMessage] = useState({
         color : "text-muted",
         text : "Veuillez importer une icône ici"
@@ -202,7 +203,7 @@ const AddApp = () => {
                                             </Col>
                                             <Col className="mt-2">
                                                 <div className="form-check">
-                                                    <input data-example="https://www.impots.mg" data-link="https://" name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
+                                                    <input data-example="https://www.impots.mg" data-link="http://" name="type_app" type="radio" id="type_app_1" className="form-check-input" value="1" 
                                                            style={{"cursor":"pointer"}} checked={(app.type_app === 1)} onChange={handleCheckChange}/>
                                                     <label title="" htmlFor="type_app_1" className="form-check-label" style={{"cursor":"pointer"}}>Application privilegiée</label>
                                                 </div>

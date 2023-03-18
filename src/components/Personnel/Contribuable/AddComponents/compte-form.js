@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap';
 
-const CompteForm = ({user, handleInputChange, prevStep, save , loading}) => {
+const CompteForm = ({user, handleInputChange, prevStep, setLoading, path, save , loading}) => {
     
     const [errors, setErrors] = useState({});
     const [showPassword,setShowPassword] = useState(0);
@@ -18,13 +18,22 @@ const CompteForm = ({user, handleInputChange, prevStep, save , loading}) => {
         }
     }
 
+    const exist_deja = (str) => {
+        const data = JSON.parse(localStorage.getItem("users") || '[]')
+        return data.some(function(el) {
+            // eslint-disable-next-line eqeqeq
+            return el.email == str
+        }); 
+    }
+
     const validateForm = () => {
         const {email, password, password_confirmation} = user;
         const newErrors = {}
         if(!email || email.trim() === '' ) newErrors.email = "Veuillez entrer l'email"
+        else if(exist_deja(email)) newErrors.email = "Email déjà utilisé par une autre utilisateur"
         if(!isValidEmail(email)) newErrors.email = "Veuillez entrer un email valide"
         if(!password || password.trim() === '') newErrors.password = "Veuillez entrer le mot de passe"
-        else if(password.length < 8) newErrors.password = "Le mot de passe doit comporter au moins 8 caractères"
+        else if(password.length < 6) newErrors.password = "Le mot de passe doit comporter au moins 6 caractères"
         if(!password_confirmation || password_confirmation.trim() === '') newErrors.password_confirmation = "Veuillez confirmer le mot de passe"
         if(password.trim() !== password_confirmation.trim()) newErrors.password_confirmation = "Confirmation de mot de passe incorrect"
         return newErrors
@@ -41,7 +50,22 @@ const CompteForm = ({user, handleInputChange, prevStep, save , loading}) => {
         if(Object.keys(formErrors).length > 0){
             setErrors(formErrors)
         } else {
-            save(e);
+            setLoading(true)
+            fetch(`${path}users`).then((response) => response.json())
+            .then((data) => {
+            const exist = data.some(function(el) {
+                // eslint-disable-next-line eqeqeq
+                return el.email == user.email
+            });
+            if(exist){
+                const newErrors = {email : "Email déjà utilisé par une autre utilisateur"}
+                setErrors(newErrors)
+                setLoading(false)
+            } else {
+                save(e);
+            }
+
+        }).catch(()=>setLoading(false))
         }
     }
 

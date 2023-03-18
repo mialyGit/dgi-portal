@@ -59,6 +59,7 @@ const Utilisateur = () => {
             sortable: true
         },
         {
+            id : "ddate",
             name: 'Date de création',
             selector: row => moment(row.created_at).format('L'),
             style: {

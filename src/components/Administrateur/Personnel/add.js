@@ -7,12 +7,13 @@ import CinForm from './AddComponents/cin-form';
 import CompteForm from './AddComponents/compte-form';
 import ProForm from './AddComponents/pro-form';
 import { errorModal } from "../../Common/SweetModal"
-
+import { API_SERVER } from "config/constant";
 import Aux from "hoc/_Aux";
 import PersApi from 'utils/pers';
 
 const AddUser = () => {
     const history = useHistory();
+    const path = API_SERVER + 'api/';
     // const today = new Date().toJSON().slice(0,10)
     const initialUserState = {
         id : "",
@@ -70,7 +71,6 @@ const AddUser = () => {
 
     const save = (e) => {
         e.preventDefault();
-        setLoading(true);
         // let str_cin = new Blob([JSON.stringify({})], { type: 'application/json'})
         let data = {...user}
         data.cin = JSON.stringify(cin)
@@ -102,9 +102,9 @@ const AddUser = () => {
                 {(() => {
                     switch (step) {
                         case 1: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
-                        case 2: return <CinForm cin={cin} handleInputChange={handleCinChange} nextStep={nextStep} prevStep={prevStep} />
+                        case 2: return <CinForm cin={cin} handleInputChange={handleCinChange} nextStep={nextStep} prevStep={prevStep} path={path}/>
                         case 3: return <ProForm user={user} handleInputChange={handleInputChange} nextStep={nextStep} prevStep={prevStep} />
-                        case 4: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep} loading={loading} />
+                        case 4: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep}  setLoading={setLoading} loading={loading} path={path} />
                         default: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
                     }
                 })()}

@@ -120,7 +120,7 @@ const Application = () =>  {
                                                 <Card.Body>
                                                     <div className="row align-items-center justify-content-center card-active">
                                                         <div className="col-6"><span onClick={()=>edit(item)} className="label bg-dark text-white f-12" style={{"cursor":"pointer"}}>Modifier</span></div>
-                                                        <div className="col-6 text-right"><a href={item.lien_app} target="_blank" rel="noopener noreferrer" className="label theme-bg text-white f-12 r-0">Aller au site</a></div>
+                                                        <div className="col-6 text-right"><a href={item.lien_app} target="_blank" rel="noopener noreferrer" className="label theme-bg text-white f-12 r-0">Visiter</a></div>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {Row, Col, Card, InputGroup, FormControl } from 'react-bootstrap';
+import {Row, Col, Card, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import DataTable from 'App/components/Datatable';
 import moment from 'moment';
+import fr  from 'moment/locale/fr';
 import ContApi from "utils/cont";
 import { API_SERVER } from "config/constant";
 import { errorModal } from "../../Common/SweetModal"
@@ -13,11 +14,12 @@ import Avatar2 from "assets/images/user/avatar-2.jpg"
 const Historique = () => {
 
     const path = API_SERVER + 'storage/';
-    moment.locale('fr');
+    moment.updateLocale('fr', fr);
     const [rows, setRows] = useState([]);
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [loading, setLoading] = useState(true)
+    const [loadingClear, setLoadingClear] = useState(false)
 
     function search (searchTerm) {
         setSearchValue(searchTerm);
@@ -29,6 +31,20 @@ const Historique = () => {
         if(searchTerm) setResetPaginationToggle(true)
         setRows(filtered);
       }
+
+    
+    const clear = () => {
+        setLoadingClear(true);
+        ContApi.clearHistory().then((res) => {
+            console.log(res);
+            setRows([])
+        }).catch((err)=>{
+            errorModal(err)
+        }).finally(() => {
+            localStorage.removeItem("hists")
+            setLoadingClear(false);
+        });
+    }
 
     const columns = [
         {
@@ -48,7 +64,16 @@ const Historique = () => {
             style : {
                 display: 'block'
             },
+            grow : 2,
             sortable: true
+        },
+        {
+            id : "ddate",
+            name: 'Heure',
+            selector: row => moment(row.created_at).fromNow(),
+            style: {
+                color: 'rgba(0,0,0,.54)',
+            },
         },
         {
             name: 'Date',
@@ -59,7 +84,9 @@ const Historique = () => {
         },
         {
             name: 'Action',
-            cell: row => <h6 className="m-0 text-c-green"><i className="fa fa-circle text-c-green f-10 m-r-15"/> {row.action} </h6>
+            grow : 3,
+            cell: row => 
+            <h6 className="m-0">{row.action} </h6>
         },
     ];
 
@@ -99,12 +126,21 @@ const Historique = () => {
                         <Card.Header>
                             <Card.Title as='h5'>Activité des utilisateurs</Card.Title>
                             <div className="card-header-right">
-                                <InputGroup size="sm" className="mt-1">
-                                    <FormControl id="search_table" name="search_table" placeholder="Rechercher..." value={searchValue} onChange={e=> search(e.target.value)} />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text><i className="feather icon-search"></i></InputGroup.Text>
-                                    </InputGroup.Append>
-                                </InputGroup>
+                                <Row>
+                                    <Col className="mt-1">
+                                        {loadingClear ? 
+                                        <Button variant="light" size="sm" disabled> <Spinner animation="border" size="sm" role="status"></Spinner> Traitement </Button>
+                                    :   <Button variant="light" size="sm" onClick={clear}><i className="feather icon-trash"></i>Vider historiques </Button>}
+                                    </Col>
+                                    <Col  className="mt-1">
+                                        <InputGroup size="sm">
+                                            <FormControl id="search_table" name="search_table" placeholder="Rechercher..." value={searchValue} onChange={e=> search(e.target.value)} />
+                                            <InputGroup.Append>
+                                                <InputGroup.Text><i className="feather icon-search"></i></InputGroup.Text>
+                                            </InputGroup.Append>
+                                        </InputGroup>
+                                    </Col>
+                                </Row>
                             </div>
                         </Card.Header>
                         <Card.Body className='px-0 py-2'>

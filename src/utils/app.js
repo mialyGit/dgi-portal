@@ -16,6 +16,10 @@ class AppApi {
   static add = (data) => {
     return axios.post(`${base}`, data);
   };
+
+  static addHistory = (data) => {
+    return axios.post(`api/historiques`, data);
+  }
 }
 
 let base = "api/applications";

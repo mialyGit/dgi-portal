@@ -17,8 +17,8 @@ class PrivilegeApi {
     return axios.delete(`${base}/${id}`);
   };
 
-  static update = (data,id) => {
-    return axios.put(`${base}/${id}`, data);
+  static update = (data) => {
+    return axios.post(`api/update_user_privilege_apps`, data);
   };
 }
 let base = "api/user_privilege_apps";

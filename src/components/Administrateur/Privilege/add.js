@@ -38,6 +38,7 @@ const AddPrivilege = () => {
         .then((data) => {
           const options = []
           data.forEach((row) => {
+            if(row.type_app)
             options.push({ label: `${row.abrev_app} - ${row.nom_app}`, value: row.id, target : { name: 'application_id', value : row.id }})
           })
           cb(options);
@@ -96,13 +97,11 @@ const AddPrivilege = () => {
             newData.privilege_id = privilege_id
 
             PrivilegeApi.add(newData).then((res)=>{
-                let json = JSON.parse(localStorage.getItem('users') || '[]')
-                console.log(json);
-                if(json.length === 0) { return history.push({pathname: '/users'}); }
+                let json = JSON.parse(localStorage.getItem('personnels') || '[]')
+                if(json.length === 0) { return history.push({pathname: '/employes'}); }
                 else {
                     let item = json.find(obj => obj.id === newData.user_id);
-                    console.log("ato");
-                    return history.push({pathname: '/users/details', state:{item}});
+                    return history.push({pathname: '/employes/details', state:{item}});
                 }
             }).catch((err)=>{
                 console.log(err);

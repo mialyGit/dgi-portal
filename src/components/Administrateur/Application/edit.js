@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useHistory, useLocation} from 'react-router-dom'
 import {Form, InputGroup, FormControl, Row, Col, Card, Button, Spinner, ProgressBar} from 'react-bootstrap';
-import { API_SERVER , basename } from "config/constant";
+import { API_SERVER } from "config/constant";
 import { deleteModal, errorModal } from 'components/Common/SweetModal';
 import Aux from "hoc/_Aux";
 import AppApi from 'utils/app';
+import no_import from 'assets/images/no-import.png';
 
 const EditApp = () => {
     const location = useLocation();
@@ -30,7 +31,7 @@ const EditApp = () => {
     const [error, setError] = useState(undefined);
     const [errors, setErrors] = useState({});
     const [progress, setProgress] = useState(0)
-    const [preview, setPreview] = useState(basename+"/no-import.png");
+    const [preview, setPreview] = useState(no_import);
     const [uploadMessage, setUploadMessage] = useState({
         color : "text-muted",
         text : "Veuillez importer une icône ici"

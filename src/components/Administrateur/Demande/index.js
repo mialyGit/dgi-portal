@@ -53,8 +53,9 @@ const Demande = () => {
             sortable: true
         },
         {
-            name: 'Date de création',
-            selector: row => moment(row.created_at).format('L'),
+            id : "ddate",
+            name: 'Date de demande',
+            selector: row => moment(row.created_at).format('LL'),
             style: {
                 color: 'rgba(0,0,0,.54)',
             },

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Row, Col, Card, Form, Spinner, InputGroup, FormControl, Button } from 'react-bootstrap';
 
-const CinForm = ({cin, handleInputChange, nextStep, prevStep}) => {
+const CinForm = ({cin, handleInputChange, nextStep, prevStep, path}) => {
+
+    const [load, setLoad] = useState(false);
 
     const [errors, setErrors] = useState({});
     const [hasDuplicata, setDuplicata] = useState(false);
@@ -27,20 +29,11 @@ const CinForm = ({cin, handleInputChange, nextStep, prevStep}) => {
         return age;
     }
 
-    const exist_deja = (str) => {
-        const data = JSON.parse(localStorage.getItem("personnels") || '[]')
-        return data.some(function(el) {
-            // eslint-disable-next-line eqeqeq
-            return JSON.parse(el.cin).numero == str
-        }); 
-    }
-
     const validateForm = () => {
         const {numero, date_delivrance, date_naissance, lieu_naissance } = cin;
         const newErrors = {}
         if(!numero || numero.trim() === '') newErrors.numero = "Veuillez entrer le numéro CIN"
         else if(numero.length !== 12 ) newErrors.numero = "Le numéro CIN doit comporter 12 caractères"
-        else if(exist_deja(numero)) newErrors.numero = "Numéro CIN existe déjà"
         if(!date_delivrance || date_delivrance.trim() === '') newErrors.date_delivrance = "Veuillez entrer la date de delivrance du cin"
         else if(getAge(false,date_delivrance,date_naissance) < 18) newErrors.date_delivrance = "La date de delivrance doit supérieur de 18 ans à la date de naissance"
         if(!date_naissance || date_naissance.trim() === '') newErrors.date_naissance = "Veuillez entrer la date de naissance"
@@ -60,7 +53,23 @@ const CinForm = ({cin, handleInputChange, nextStep, prevStep}) => {
         if(Object.keys(formErrors).length > 0){
             setErrors(formErrors)
         } else {
-            nextStep();
+            setLoad(true)
+            fetch(`${path}users`).then((response) => response.json())
+            .then((data) => {
+            const exist = data.some(function(el) {
+                // eslint-disable-next-line eqeqeq
+                return JSON.parse(el.cin).numero == cin.numero
+            });
+            if(exist){
+                const newErrors = {numero : "Numéro CIN existe déjà"}
+                setErrors(newErrors)
+                setLoad(false)
+            } else {
+                setLoad(false)
+                nextStep();
+            }
+
+        }).catch(()=>setLoad(false))
         }
     }
 
@@ -219,7 +228,17 @@ const CinForm = ({cin, handleInputChange, nextStep, prevStep}) => {
                 <Card.Footer>
                     <div style={{display:'flex', justifyContent:'right'}}>
                         <Button variant="secondary" size="sm" onClick={back}><i className="feather icon-chevrons-left"></i>Retour</Button>{' '}
-                        <Button className="no-margin-btn" type="submit" variant="primary" size="sm" onClick={next}>Confirmer <i className="feather icon-chevrons-right"></i></Button>
+                        {(load && (
+                            <Button className="no-margin-btn" variant="primary" size="sm" disabled>
+                                <Spinner as="span" className="mr-2" size="sm" animation="border" role="status" aria-hidden="true" />
+                                Veuillez patientez ...
+                            </Button>
+                        )) || (
+                            <Button className="no-margin-btn" variant="primary" size="sm" onClick={next}>
+                                Confirmer <i className="feather icon-chevrons-right"></i>
+                            </Button>
+                        )}
+                        
                     </div>
                 </Card.Footer>
             </Card>

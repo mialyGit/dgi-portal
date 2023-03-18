@@ -55,7 +55,7 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
         const {nif, raison_sociale, activite } = user;
         const newErrors = {}
         if(!nif || nif.trim() === '') newErrors.nif = "Veuillez entrer le NIF"
-        else if(nif.length < 6 ) newErrors.nif = "Le NIF doit comporter au moins 6 caractères"
+        else if(nif.length < 10 ) newErrors.nif = "Le NIF doit comporter au moins 10 caractères"
         else if(exist_deja(nif)) newErrors.nif = "NIF existe déjà"
         if(!raison_sociale || raison_sociale.trim() === '') newErrors.raison_sociale = "Veuillez entrer le raison sociale"
         if(!activite || activite.trim() === '') newErrors.activite = "Veuillez entrer l'activité"
@@ -155,29 +155,32 @@ const ProForm = ({user, handleInputChange, nextStep, prevStep}) => {
                         </Col>
                         <Col md={6} >
                             <Form.Group as={Row} className="mb-3">
-                                <Form.Label className="text-right" column sm={3}>Situation matrimoniale</Form.Label>
-                                <Col>
-                                    <InputGroup size="sm">
-                                        <AsyncSelect filterOption={filterOption} loadOptions={loadGrade} defaultOptions placeholder="Selectionner" name="s_matrim" styles={ customStyles('s_matrim') } onChange={handleChange} />
-                                    </InputGroup>
-                                    <small className="text-danger text-right">{errors.s_matrim}</small>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Row} className="mb-3">
                                 <Form.Label className="text-right" column sm={3}>Type de contribuable</Form.Label>
                                 <Col>
-                                    <div className="form-check">
+                                    <div className="form-check mt-2">
                                         <input name="type_contr" type="radio" id="type_contr_0" className="form-check-input" value={0} style={{"cursor":"pointer"}} checked={user.type_contr === "0"}  onChange={handleChange}/>
                                         <label title="" htmlFor="type_contr_0" className="form-check-label" style={{"cursor":"pointer"}}>Personne physique</label>
                                     </div>
                                 </Col>
                                 <Col>
-                                    <div className="form-check">
+                                    <div className="form-check mt-2">
                                         <input name="type_contr" type="radio" id="type_contr_1" className="form-check-input" value={1} style={{"cursor":"pointer"}} checked={user.type_contr === "1"}  onChange={handleChange}/>
                                         <label title="" htmlFor="type_contr_0" className="form-check-label" style={{"cursor":"pointer"}}>Personne morale</label>
                                     </div>
                                 </Col> 
                             </Form.Group>
+                            { user.type_contr === "0" && (
+                                <Form.Group as={Row} className="mb-3">
+                                    <Form.Label className="text-right" column sm={3}>Situation matrimoniale</Form.Label>
+                                    <Col>
+                                        <InputGroup size="sm">
+                                            <AsyncSelect filterOption={filterOption} loadOptions={loadGrade} defaultOptions placeholder="Selectionner" name="s_matrim" styles={ customStyles('s_matrim') } onChange={handleChange} />
+                                        </InputGroup>
+                                        <small className="text-danger text-right">{errors.s_matrim}</small>
+                                    </Col>
+                            </Form.Group>
+                            )}
+                            
                         </Col>
                     </Row>
                     <Row>

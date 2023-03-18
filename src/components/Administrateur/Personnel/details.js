@@ -18,6 +18,10 @@ const UserDetails = () => {
     });
 
     const [user, setUser] = useState({})
+    const [personnel, setPersonnel] = useState({})
+    const [grade, setGrade] = useState({})
+    const [fonction, setFonction] = useState({})
+    const [service, setService] = useState({})
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     
@@ -25,6 +29,10 @@ const UserDetails = () => {
         /*const mode = e.target.id
         mode === "edit_mode" ? e.target.src = basename + "/default-icon.png" :*/
         e.target.src = basename + "/user-icon-default.png";
+    }
+
+    const edit = (item) => {
+        history.push({pathname: '/employes/privileges/edit', state: {item}})
     }
 
     const getAll = (id) => {
@@ -59,6 +67,10 @@ const UserDetails = () => {
                 setPreview(path + item.photo)
                 setUploadMessage({...uploadMessage, text: item.photo.split('/')[1]})
             }
+            setPersonnel({...item.personnel})
+            setFonction({...item.personnel.fonction})
+            setService({...item.personnel.fonction.service})
+            setGrade({...item.personnel.grade})
             setUser({...item});
             getAll(item.id)
         } else {
@@ -89,18 +101,32 @@ const UserDetails = () => {
                                     </Card>
                                 </Col>
                                 <Col></Col>
-                                <Col md={8}>
+                                <Col md={4}>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Nom  : </label><b>{user.nom}</b></Col>
+                                        <Col><label className="mr-2"> Nom  : </label><b>{user.nom}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Prénom  : </label><b>{user.prenom}</b></Col>
+                                        <Col><label className="mr-2"> Prénom  : </label><b>{user.prenom}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Téléphone  : </label><b>{user.telephone}</b></Col>
+                                        <Col><label className="mr-2"> Téléphone  : </label><b>{user.telephone}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Adresse  : </label><b>{user.adresse}</b></Col>
+                                        <Col><label className="mr-2"> Adresse  : </label><b>{user.adresse}</b></Col>
+                                    </Row>
+                                </Col>
+                                <Col md={5}>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Numéro matricule : </label><b>{personnel.num_matricule}</b></Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Fonction  : </label><b>{fonction.nom_fn}</b></Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Grade  : </label><b>{grade.nom_gr}</b></Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Service  : </label><b>{service.nom_sc}</b></Col>
                                     </Row>
                                 </Col>
                             </Row>
@@ -111,6 +137,7 @@ const UserDetails = () => {
                                             <td>#</td>
                                             <td>Application</td>
                                             <td>Details</td>
+                                            <td>Options</td>
                                         </tr>
                                         {loading ? (
                                             <tr className="unread text-center">
@@ -127,6 +154,9 @@ const UserDetails = () => {
                                                     </td>
                                                     <td>
                                                         <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>{item.desc_app}</h6>
+                                                    </td>
+                                                    <td>
+                                                        <button className="theme-bg-btn blue" onClick={() => edit(item)} >Modifier</button>
                                                     </td>
                                                 </tr>
                                             )) : (

@@ -25,6 +25,11 @@ class ContApi {
     return axios.put(`${base}/${id}`, data);
     // return axios.put(`${base}/${id}`, data);
   };
+
+  static clearHistory = () => {
+    return axios.delete(`api/historiques_all`);
+    // return axios.put(`${base}/${id}`, data);
+  };
 }
 
 // let base = "api/users";

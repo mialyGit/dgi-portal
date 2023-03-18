@@ -7,12 +7,17 @@ import CinForm from './AddComponents/cin-form';
 import CompteForm from './AddComponents/compte-form';
 import ProForm from './AddComponents/pro-form';
 import { errorModal } from "../../Common/SweetModal"
+import { useAuth } from "auth-context/auth.context";
+import { API_SERVER } from "config/constant";
 
 import Aux from "hoc/_Aux";
 import ContApi from 'utils/cont';
 
 const AddUser = () => {
     const history = useHistory();
+    const { userSession } =  useAuth();
+    const path = API_SERVER + 'api/';
+
     // const today = new Date().toJSON().slice(0,10)
     const initialUserState = {
         id : "",
@@ -25,7 +30,7 @@ const AddUser = () => {
         password : '',
         password_confirmation : '',
         file: faker.image.avatar(),
-        nif : faker.phone.number('######'),
+        nif : faker.phone.number('##########'),
         raison_sociale : faker.company.bsNoun(),
         type_user_id : 0,
         s_matrim : faker.datatype.number({'min': 0,'max': 3}),
@@ -33,7 +38,7 @@ const AddUser = () => {
         type_contr : "0",
         localisation : JSON.stringify({ x : 1, y : 1})
     }
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
 
     const nextStep = () => {
@@ -73,10 +78,10 @@ const AddUser = () => {
 
     const save = (e) => {
         e.preventDefault();
-        setLoading(true);
         // let str_cin = new Blob([JSON.stringify({})], { type: 'application/json'})
         let data = {...user}
         data.cin = JSON.stringify(cin)
+        data.maker_id = userSession.id
         ContApi.add(data).then((res)=>{
             console.log(res);
             localStorage.removeItem("contribuables")
@@ -105,9 +110,9 @@ const AddUser = () => {
                 {(() => {
                     switch (step) {
                         case 1: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
-                        case 2: return <CinForm cin={cin} handleInputChange={handleCinChange} nextStep={nextStep} prevStep={prevStep} />
+                        case 2: return <CinForm cin={cin} handleInputChange={handleCinChange} nextStep={nextStep} prevStep={prevStep} path={path} />
                         case 3: return <ProForm user={user} handleInputChange={handleInputChange} nextStep={nextStep} prevStep={prevStep} />
-                        case 4: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep} loading={loading} />
+                        case 4: return <CompteForm user={user} handleInputChange={handleInputChange} save={save} prevStep={prevStep} setLoading={setLoading} loading={loading} path={path} />
                         default: return <PersForm user={user} handleFileChange={handleInputFileChange} handleInputChange={handleInputChange} nextStep={nextStep} />
                     }
                 })()}

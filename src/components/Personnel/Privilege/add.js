@@ -6,11 +6,13 @@ import AsyncSelect from 'react-select/async';
 import { API_SERVER } from "config/constant";
 import Aux from "hoc/_Aux";
 import PrivilegeApi from 'utils/privilege';
+import { useAuth } from "auth-context/auth.context";
 
 const AddPrivilege = () => {
     const history = useHistory();
     const path = API_SERVER + 'api/';
-    
+    const { userSession } =  useAuth();
+
     const initialState = {
         user_id : 0,
         application_id : 0,
@@ -38,7 +40,8 @@ const AddPrivilege = () => {
         .then((data) => {
           const options = []
           data.forEach((row) => {
-            options.push({ label: `${row.abrev_app} - ${row.nom_app}`, value: row.id, target : { name: 'application_id', value : row.id }})
+            if(row.type_app)
+                options.push({ label: `${row.abrev_app} - ${row.nom_app}`, value: row.id, target : { name: 'application_id', value : row.id }})
           })
           cb(options);
         })
@@ -94,6 +97,7 @@ const AddPrivilege = () => {
             const privilege_id = privileges.map(el => el.value).join(',');
             const newData =  {...data}
             newData.privilege_id = privilege_id
+            newData.maker_id = userSession.id
 
             PrivilegeApi.add(newData).then((res)=>{
                 let json = JSON.parse(localStorage.getItem('contribuables') || '[]')
@@ -127,7 +131,7 @@ const AddPrivilege = () => {
                     <Form onSubmit={save}>
                         <Card>
                             <Card.Header>
-                                <Card.Title as="h5"> Ajouter un privilege </Card.Title>
+                                <Card.Title as="h5"> Ajouter des privilèges </Card.Title>
                             </Card.Header>
                             <Card.Body>
                                 {/* { JSON.stringify(privileges) } */}
@@ -169,7 +173,7 @@ const AddPrivilege = () => {
                             )}
 
                             {(loading && (
-                                <Button variant="primary" className="pull-right mt-2" disabled>
+                                <Button variant="primary" size="sm" className="pull-right mt-2" disabled>
                                     <Spinner as="span" className="mr-2" size="sm" animation="border" role="status" aria-hidden="true" />
                                     Veuillez patientez ...
                                 </Button>

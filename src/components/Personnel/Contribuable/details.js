@@ -18,6 +18,7 @@ const UserDetails = () => {
     });
 
     const [user, setUser] = useState({})
+    const [contribuable, setContribuable] = useState({})
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     
@@ -25,6 +26,10 @@ const UserDetails = () => {
         /*const mode = e.target.id
         mode === "edit_mode" ? e.target.src = basename + "/default-icon.png" :*/
         e.target.src = basename + "/user-icon-default.png";
+    }
+
+    const edit = (item) => {
+        history.push({pathname: '/contribuables/privileges/edit', state: {item}})
     }
 
     const getAll = (id) => {
@@ -55,14 +60,16 @@ const UserDetails = () => {
     const setDefaultValues = () => {
         if(location.state && location.state.item){
             let item =  location.state.item;
+            console.log(item.contribuable);
             if(!item.photo.includes('default-icon')){
                 setPreview(path + item.photo)
                 setUploadMessage({...uploadMessage, text: item.photo.split('/')[1]})
             }
+            setContribuable({...item.contribuable})
             setUser({...item});
             getAll(item.id)
         } else {
-            history.push('/users')
+            history.push('/contribuables')
         }
     }
 
@@ -89,28 +96,47 @@ const UserDetails = () => {
                                     </Card>
                                 </Col>
                                 <Col></Col>
-                                <Col md={8}>
+                                <Col md={4}>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Nom  : </label><b>{user.nom}</b></Col>
+                                        <Col><label className="mr-2"> Nom  : </label><b>{user.nom}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Prénom  : </label><b>{user.prenom}</b></Col>
+                                        <Col><label className="mr-2"> Prénom  : </label><b>{user.prenom}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Téléphone  : </label><b>{user.telephone}</b></Col>
+                                        <Col><label className="mr-2"> Téléphone  : </label><b>{user.telephone}</b></Col>
                                     </Row>
                                     <Row className="mb-3">
-                                        <Col><label className="mr-4"> Adresse  : </label><b>{user.adresse}</b></Col>
+                                        <Col><label className="mr-2"> Adresse  : </label><b>{user.adresse}</b></Col>
+                                    </Row>
+                                </Col>
+
+                                <Col md={5}>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Numero d'Identification Fiscale (NIF) : </label><b>{contribuable.nif}</b></Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Raison sociale  : </label><b>{contribuable.raison_sociale}</b></Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Situation matrimoniale  : </label><b>
+                                            {contribuable.s_matrim === 3 ? 'Veuf' : contribuable.s_matrim === 1 ? 'Marié' : contribuable.s_matrim === 2 ? 'Divorcé': 'Célibataire'}</b>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mb-3">
+                                        <Col><label className="mr-2"> Type  : </label><b>{contribuable.type_contr ? 'Personne physique' : 'Personne morale'}</b></Col>
                                     </Row>
                                 </Col>
                             </Row>
                             <Row>
+
                                 <Table responsive hover>
                                     <tbody>
                                         <tr>
                                             <td>#</td>
                                             <td>Application</td>
                                             <td>Details</td>
+                                            <td>Options</td>
                                         </tr>
                                         {loading ? (
                                             <tr className="unread text-center">
@@ -128,10 +154,13 @@ const UserDetails = () => {
                                                     <td>
                                                         <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>{item.desc_app}</h6>
                                                     </td>
+                                                    <td>
+                                                    <button className="theme-bg-btn blue" onClick={() => edit(item)} >Modifier</button>
+                                                    </td>
                                                 </tr>
                                             )) : (
                                                 <tr className="unread text-center">
-                                                    <td colSpan={4}>Aucun privilège aux applcations de DGI</td> 
+                                                    <td colSpan={4}>Aucun privilège aux applications</td> 
                                                 </tr>
                                             )}
                                     </tbody>

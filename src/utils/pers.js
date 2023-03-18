@@ -1,6 +1,11 @@
 import axios from "./index";
 
 class PersApi {
+
+  static getUsers = () => {
+    return axios.get(`api/users`);
+  };
+
   static getAll = () => {
     return axios.get(`${base}`);
   };
@@ -27,7 +32,7 @@ class PersApi {
   };
 
   static update = (data,id) => {
-    return axios.put(`${base}/${id}`, data);
+    return axios.put(`api/uusers/${id}`, data);
     // return axios.put(`${base}/${id}`, data);
   };
 }

@@ -92,9 +92,6 @@ const Profile = () => {
     return (
         <Aux>
             <Row>
-                { JSON.stringify(uptadedUser) }
-            </Row>
-            <Row>
                 <Col>
                     <CompteForm user={user} handleChange={handleInputChange} save={save} cancel={cancel} loading={loading} />
                     <PersForm user={user} handleFileChange={handleInputFileChange} handleChange={handleInputChange} save={save} cancel={cancel} loading={loading} />

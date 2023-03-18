@@ -1,7 +1,7 @@
-import { basename } from 'config/constant';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card, Form, InputGroup, FormControl, Button, ProgressBar } from 'react-bootstrap';
+import defaultImg from 'assets/images/no-import.png'
 
 const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     const fileRef = useRef();
@@ -22,7 +22,11 @@ const PersForm = ({user, handleFileChange,  handleInputChange, nextStep}) => {
     }
 
     const defaultSrcImg = (e) => {
-        e.target.src = basename + "/no-import.png"
+        setPreview(defaultImg)
+        setUploadMessage({
+            color : "text-muted",
+            text : "Veuillez importer une icône ici"
+        })
     }
 
     const validateForm = () => {

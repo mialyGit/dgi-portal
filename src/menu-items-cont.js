@@ -12,6 +12,13 @@ export default {
                     type: 'item',
                     url: '/contribuables/apps',
                     icon: 'feather icon-box',
+                },
+                {
+                    id: 'privilège',
+                    title: 'Mes privilèges',
+                    type: 'item',
+                    url: '/contribuables/mesprivileges',
+                    icon: 'feather icon-shield',
                 }
             ]
         },
